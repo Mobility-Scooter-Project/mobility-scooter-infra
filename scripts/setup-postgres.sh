@@ -4,6 +4,7 @@ set -e
 sudo apt update
 sudo apt install postgresql-client -y
 
+# https://docs.timescale.com/self-hosted/latest/install/installation-docker/
 docker pull timescale/timescaledb:2.18.1-pg17
 sudo docker stop timescaledb && sudo docker rm timescaledb
 docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=postgres timescale/timescaledb:2.18.1-pg17
