@@ -1,0 +1,5 @@
+[Global]
+auth-url=https://js2.jetstream-cloud.org:5000/v3/
+region=IU
+application-credential-id=your-application-credential-id
+application-credential-secret=your-application-credential-secret

@@ -4,7 +4,7 @@ import { provider } from './.gen/providers/openstack';
 import 'dotenv/config';
 import { SecurityModule } from "./modules/security/main";
 import { NullProvider } from "./.gen/providers/null/provider";
-import { RedisModule } from "./modules/redis/main";
+import { K3sServerModule } from "./modules/k3s/server/main";
 
 class Main extends TerraformStack {
   constructor(scope: Construct, id: string) {
@@ -30,8 +30,7 @@ class Main extends TerraformStack {
     new NullProvider(this, "null", {})
 
     const Security = new SecurityModule(this, `${ENVIRONMENT}-security`, { ENVIRONMENT });
-   // new DatabaseModule(this, "database", { ENVIRONMENT, DEFAULT_IMAGE_NAME, Security });
-    new RedisModule(this, "redis", { ENVIRONMENT, DEFAULT_IMAGE_NAME, Security });
+    new K3sServerModule(this, "k3s-server", { ENVIRONMENT, DEFAULT_IMAGE_NAME, Security });
   }
 }
 

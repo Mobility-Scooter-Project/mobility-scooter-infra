@@ -11,3 +11,4 @@ tsconfig.tsbuildinfo
 !setup.js
 credentials.*
 .env
+cloud-config
