@@ -6,9 +6,7 @@ namespace: argocd
 resources:
 - namespace.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-- middleware.yaml
-- ingress.yaml
-- http.yaml
+- helm-chart-config.yaml
 
 patchesStrategicMerge:
 - cmd-commands-cm.yaml
