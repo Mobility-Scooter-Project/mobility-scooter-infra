@@ -6,15 +6,18 @@ namespace: argocd
 resources:
 - namespace.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- middleware.yaml
+- ingress.yaml
+- http.yaml
 
 patchesStrategicMerge:
 - cmd-commands-cm.yaml
 
-patches:
-  - target:
-      kind: Service
-      name: argocd-server
-    patch: |-
-      - op: add
-        path: /spec/type
-        value: LoadBalancer
+#patches:
+ # - target:
+  #    kind: Service
+   #   name: argocd-server
+   # patch: |-
+    #  - op: add
+     #   path: /spec/type
+      #  value: LoadBalancer
