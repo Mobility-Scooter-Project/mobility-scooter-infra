@@ -1,4 +1,4 @@
-apiVersion: traefik.io/v1alpha1
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: argocd-server
@@ -8,13 +8,13 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: HostRegexp(`.*`)
+      match: PathPrefix(`/argocd`)
       priority: 10
       services:
         - name: argocd-server
           port: 80
     - kind: Rule
-      match: HostRegexp(`.*`) && Headers(`Content-Type`, `application/grpc`)
+      match: PathPrefix(`/argocd`) && Headers(`Content-Type`, `application/grpc`)
       priority: 11
       services:
         - name: argocd-server

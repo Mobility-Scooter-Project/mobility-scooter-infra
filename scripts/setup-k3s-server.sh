@@ -16,6 +16,9 @@ until kubectl get svc -n kube-system traefik &>/dev/null; do
   sleep 2
 done
 
+
+kubectl apply -k cluster/base/traefik
+
 #kubectl create secret -n kube-system generic cloud-config --from-file=/tmp/kustomize/base/openstack/cloud.conf || true
 kubectl create secret -n kube-system generic cloud-config --from-file=cluster/base/openstack/cloud.conf || true
 
@@ -34,5 +37,6 @@ sleep 30
 kubectl apply -f cluster/base/argocd/ingress.yaml
 
 IP=$(kubectl get svc -n kube-system traefik -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-echo "ArgoCD server is available at http://$IP"
+echo "Traefik Dashboard is available at http://$IP/dashboard/"
+echo "ArgoCD server is available at https://$IP/argocd"
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
