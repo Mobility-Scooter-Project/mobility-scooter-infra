@@ -35,6 +35,36 @@ export class SecurityModule extends Construct {
             protocol: 'icmp',
             securityGroupId: this.sshSecurityGroup.id,
         });
+
+        // allow HTTP
+        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-http-rule`, {
+            direction: 'ingress',
+            ethertype: 'IPv4',
+            protocol: 'tcp',
+            portRangeMax: 80,
+            portRangeMin: 80,
+            securityGroupId: this.sshSecurityGroup.id,
+        });
+
+        // allow HTTPS
+        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-https-rule`, {
+            direction: 'ingress',
+            ethertype: 'IPv4',
+            protocol: 'tcp',
+            portRangeMax: 443,
+            portRangeMin: 443,
+            securityGroupId: this.sshSecurityGroup.id,
+        });
+
+        // allow k8s API
+        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-k8s-api-rule`, {
+            direction: 'ingress',
+            ethertype: 'IPv4',
+            protocol: 'tcp',
+            portRangeMax: 6443,
+            portRangeMin: 6443,
+            securityGroupId: this.sshSecurityGroup.id,
+        });
     }
 
     public getSshSecurityGroup() {

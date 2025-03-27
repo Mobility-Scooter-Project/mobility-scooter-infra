@@ -12,3 +12,4 @@ tsconfig.tsbuildinfo
 credentials.*
 .env
 cloud.conf
+cluster.config

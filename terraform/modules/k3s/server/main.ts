@@ -9,6 +9,7 @@ import { DataOpenstackNetworkingNetworkV2 } from "../../../.gen/providers/openst
 import { NetworkingFloatingipAssociateV2 } from "../../../.gen/providers/openstack/networking-floatingip-associate-v2";
 import { Resource } from "../../../.gen/providers/null/resource";
 import { ComputeKeypairV2 } from "../../../.gen/providers/openstack/compute-keypair-v2";
+import { writeFile, writeFileSync } from "fs";
 
 export type k3sServerModuleProps = {
     Security: SecurityModule;
@@ -81,15 +82,24 @@ export class K3sServerModule extends Construct {
                     "chmod +x /tmp/setup-k3s-server.sh",
                     "sudo /tmp/setup-k3s-server.sh",
                 ]
-            }],
+            },
+            {
+                type: "local-exec",
+                command: [
+                    "mkdir -p /tmp/ssh",
+                    `echo "${k3sServerKeyPair.privateKey}" > /tmp/ssh/k3s_private_key`,
+                    "chmod 600 /tmp/ssh/k3s_private_key",
+                    `ssh -o StrictHostKeyChecking=no -i /tmp/ssh/k3s_private_key ubuntu@${k3sServerInstanceIp.address} "sudo cat ~/local-cluster.config" > ${process.cwd()}/../cluster.config`
+                ].join(" && ")
+            }
+            ],
             connection: {
                 type: "ssh",
                 host: k3sServerInstanceIp.address,
                 privateKey: k3sServerKeyPair.privateKey,
                 user: "ubuntu",
-            }
+            },
         })
-
         new TerraformOutput(this, `k3s-server-ip-output`, {
             value: k3sServerInstanceIp.address,
         });
