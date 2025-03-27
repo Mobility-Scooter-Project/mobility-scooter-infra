@@ -2,8 +2,8 @@
 set -e
 
 echo "Installing k3s..."
-export KUBECONFIG=/home/bryan/local-cluster.config
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig=$KUBECONFIG --disable-cloud-controller kubelet-arg='cloud-provider=external' --write-kubeconfig-mode=644" sh -
+export KUBECONFIG=~/local-cluster.config
+sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig=$KUBECONFIG --disable-cloud-controller kubelet-arg='cloud-provider=external' --write-kubeconfig-mode=644" sh -
 
 echo "Waiting for k3s to be ready..."
 until kubectl get nodes &>/dev/null; do
