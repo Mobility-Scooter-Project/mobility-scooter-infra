@@ -7,3 +7,4 @@ application-credential-secret=your-application-credential-secret
 [LoadBalancer]
 use-octavia=true
 subnet-id=your-subnet-id
+manage-security-groups=true

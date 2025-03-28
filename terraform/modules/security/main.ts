@@ -65,6 +65,7 @@ export class SecurityModule extends Construct {
             portRangeMin: 6443,
             securityGroupId: this.sshSecurityGroup.id,
         });
+        
     }
 
     public getSshSecurityGroup() {

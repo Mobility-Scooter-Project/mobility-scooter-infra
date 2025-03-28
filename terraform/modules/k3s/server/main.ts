@@ -79,7 +79,7 @@ export class K3sServerModule extends Construct {
             type: "remote-exec",
             inline: [
                 "chmod +x /tmp/setup-k3s-server.sh",
-                `sudo FLOATING_IP=${k3sServerInstanceIp.address} /tmp/setup-k3s-server.sh`,
+                `sudo FLOATING_IP=${k3sServerInstanceIp.address} INSTANCE_ID=${k3sServerInstance.id} /tmp/setup-k3s-server.sh`,
             ]
             },
             {
