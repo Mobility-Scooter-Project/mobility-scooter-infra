@@ -3,11 +3,10 @@ set -e
 
 echo "Installing k3s..."
 export KUBECONFIG=/home/ubuntu/local-cluster.config
-sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig=$KUBECONFIG --tls-san $FLOATING_IP --tls-san 127.0.0.1 --disable-cloud-controller kubelet-arg='cloud-provider=external' --write-kubeconfig-mode=644" sh -
+sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig=$KUBECONFIG --disable=servicelb --tls-san $FLOATING_IP --tls-san 127.0.0.1 --disable-cloud-controller kubelet-arg='cloud-provider=external' --write-kubeconfig-mode=644" sh -
 
 echo "Waiting for k3s to be ready..."
 until kubectl get nodes &>/dev/null; do
-  kubectl get nodes
   sleep 2
 done
 
@@ -27,7 +26,7 @@ until kubectl get svc -n argocd-server &>/dev/null; do
   sleep 2
 done
 
-kubectl apply -f /tmp/cluster/base/argocd/ingress.yaml
+#kubectl apply -f /tmp/cluster/base/argocd/ingress.yaml
 
 IP=$(kubectl get svc -n kube-system traefik -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
 echo "Traefik Dashboard is available at http://$IP/dashboard/"

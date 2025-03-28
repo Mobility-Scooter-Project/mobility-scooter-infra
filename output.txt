@@ -1,0 +1,20 @@
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mTraefik version 3.3.2 built on 2025-01-14T15:52:24Z[0m [36mversion=[0m3.3.2
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStats collection is enabled.[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mMany thanks for contributing to Traefik's improvement by allowing us to receive anonymous information from your configuration.[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mHelp us improve Traefik by leaving this feature on :)[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mMore details on: https://doc.traefik.io/traefik/contributing/data-collection/[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStarting provider aggregator *aggregator.ProviderAggregator[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStarting provider *traefik.Provider[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStarting provider *crd.Provider[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mlabel selector is: ""[0m [36mproviderName=[0mkubernetescrd
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mCreating in-cluster Provider client[0m [36mproviderName=[0mkubernetescrd
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStarting provider *acme.ChallengeTLSALPN[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mStarting provider *ingress.Provider[0m
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mingress label selector is: ""[0m [36mproviderName=[0mkubernetes
+[90m2025-03-27T22:06:37Z[0m [32mINF[0m [1mCreating in-cluster Provider client[0m [36mproviderName=[0mkubernetes
+[90m2025-03-27T22:06:44Z[0m [31mERR[0m [36merror=[0m[31m[1m"error while parsing rule PathPrefix(`/argocd`) && Headers(`Content-Type`, `application/grpc`): unsupported function: Headers"[0m[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-bb563099c5ec8d38d917@kubernetescrd
+[90m2025-03-27T22:06:44Z[0m [33mWRN[0m [1mNo domain found in rule PathPrefix(`/argocd`) && Headers(`Content-Type`, `application/grpc`), the TLS options applied for this router will depend on the SNI of each request[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-bb563099c5ec8d38d917@kubernetescrd
+[90m2025-03-27T22:06:44Z[0m [33mWRN[0m [1mNo domain found in rule PathPrefix(`/argocd`), the TLS options applied for this router will depend on the SNI of each request[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-1c22137dceabbd99db24@kubernetescrd
+[90m2025-03-27T22:07:24Z[0m [31mERR[0m [36merror=[0m[31m[1m"error while parsing rule PathPrefix(`/argocd`) && Headers(`Content-Type`, `application/grpc`): unsupported function: Headers"[0m[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-bb563099c5ec8d38d917@kubernetescrd
+[90m2025-03-27T22:07:24Z[0m [33mWRN[0m [1mNo domain found in rule PathPrefix(`/argocd`) && Headers(`Content-Type`, `application/grpc`), the TLS options applied for this router will depend on the SNI of each request[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-bb563099c5ec8d38d917@kubernetescrd
+[90m2025-03-27T22:07:24Z[0m [33mWRN[0m [1mNo domain found in rule PathPrefix(`/argocd`), the TLS options applied for this router will depend on the SNI of each request[0m [36mentryPointName=[0mwebsecure [36mrouterName=[0margocd-argocd-server-1c22137dceabbd99db24@kubernetescrd
