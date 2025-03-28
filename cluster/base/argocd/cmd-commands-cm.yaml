@@ -7,4 +7,3 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   server.insecure: "true"
-  server.rootpath: "/argocd"

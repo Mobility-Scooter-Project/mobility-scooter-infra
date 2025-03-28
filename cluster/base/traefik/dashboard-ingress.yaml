@@ -4,7 +4,7 @@ metadata:
   name: traefik-dashboard
 spec:
   routes:
-  - match: PathPrefix(`/api`) || PathPrefix(`/dashboard`)
+  - match: Host("traefik.cis240470.projects.jetstream-cloud.org") && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
     kind: Rule
     services:
     - name: api@internal
