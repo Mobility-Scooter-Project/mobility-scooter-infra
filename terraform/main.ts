@@ -28,7 +28,7 @@ class Main extends TerraformStack {
     new NullProvider(this, "null", {})
 
     const Security = new SecurityModule(this, `security`, );
-    new K3sServerModule(this, "k3s-server", { DEFAULT_IMAGE_NAME, Security });
+    new K3sServerModule(this, "k3s-head", { DEFAULT_IMAGE_NAME, Security });
   }
 }
 
