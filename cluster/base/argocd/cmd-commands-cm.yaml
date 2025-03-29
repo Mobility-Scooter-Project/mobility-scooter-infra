@@ -6,4 +6,5 @@ metadata:
     app.kubernetes.io/name: argocd-cmd-params-cm
     app.kubernetes.io/part-of: argocd
 data:
+  # This is required when using Traefik ingress with TLS termination
   server.insecure: "true"

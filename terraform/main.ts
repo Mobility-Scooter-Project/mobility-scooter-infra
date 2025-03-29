@@ -10,8 +10,6 @@ class Main extends TerraformStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    const ENVIRONMENT = process.env.ENVIRONMENT!
-
     const OS_AUTH_URL = process.env.OS_AUTH_URL
     const OS_REGION_NAME = process.env.OS_REGION_NAME
     const OS_APPLICATION_CREDENTIAL_ID = process.env.OS_APPLICATION_CREDENTIAL_ID
@@ -29,8 +27,8 @@ class Main extends TerraformStack {
 
     new NullProvider(this, "null", {})
 
-    const Security = new SecurityModule(this, `${ENVIRONMENT}-security`, { ENVIRONMENT });
-    new K3sServerModule(this, "k3s-server", { ENVIRONMENT, DEFAULT_IMAGE_NAME, Security });
+    const Security = new SecurityModule(this, `security`, );
+    new K3sServerModule(this, "k3s-server", { DEFAULT_IMAGE_NAME, Security });
   }
 }
 

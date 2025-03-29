@@ -2,24 +2,19 @@ import { Construct } from 'constructs';
 import { NetworkingSecgroupV2 } from '../../.gen/providers/openstack/networking-secgroup-v2';
 import { NetworkingSecgroupRuleV2 } from '../../.gen/providers/openstack/networking-secgroup-rule-v2';
 
-export type SecurityModuleProps = {
-    ENVIRONMENT: string;
-}
-
 export class SecurityModule extends Construct {
     private sshSecurityGroup: NetworkingSecgroupV2
 
-    constructor(scope: Construct, id: string, props: SecurityModuleProps) {
+    constructor(scope: Construct, id: string) {
         super(scope, id);
-        const { ENVIRONMENT } = props;
 
-        this.sshSecurityGroup = new NetworkingSecgroupV2(this, `${ENVIRONMENT}-ssh-security-group`, {
-            name: `${ENVIRONMENT}-ssh-security-group`,
+        this.sshSecurityGroup = new NetworkingSecgroupV2(this, `ssh-security-group`, {
+            name: `ssh-security-group`,
             description: 'Allow SSH traffic',
         })
 
         // allow SSH
-        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-ingress-rule`, {
+        new NetworkingSecgroupRuleV2(this, `ssh-security-ingress-rule`, {
             direction: 'ingress',
             ethertype: 'IPv4',
             protocol: 'tcp',
@@ -29,7 +24,7 @@ export class SecurityModule extends Construct {
         });
 
         // allow ICMP
-        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-icmp-rule`, {
+        new NetworkingSecgroupRuleV2(this, `ssh-security-icmp-rule`, {
             direction: 'ingress',
             ethertype: 'IPv4',
             protocol: 'icmp',
@@ -37,7 +32,7 @@ export class SecurityModule extends Construct {
         });
 
         // allow HTTP
-        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-http-rule`, {
+        new NetworkingSecgroupRuleV2(this, `ssh-security-http-rule`, {
             direction: 'ingress',
             ethertype: 'IPv4',
             protocol: 'tcp',
@@ -47,7 +42,7 @@ export class SecurityModule extends Construct {
         });
 
         // allow HTTPS
-        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-https-rule`, {
+        new NetworkingSecgroupRuleV2(this, `ssh-security-https-rule`, {
             direction: 'ingress',
             ethertype: 'IPv4',
             protocol: 'tcp',
@@ -57,7 +52,7 @@ export class SecurityModule extends Construct {
         });
 
         // allow k8s API
-        new NetworkingSecgroupRuleV2(this, `${ENVIRONMENT}-ssh-security-k8s-api-rule`, {
+        new NetworkingSecgroupRuleV2(this, `ssh-security-k8s-api-rule`, {
             direction: 'ingress',
             ethertype: 'IPv4',
             protocol: 'tcp',

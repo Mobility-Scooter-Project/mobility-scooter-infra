@@ -9,12 +9,3 @@ resources:
 
 patchesStrategicMerge:
 - cmd-commands-cm.yaml
-
-#patches:
- # - target:
-  #    kind: Service
-   #   name: argocd-server
-   # patch: |-
-    #  - op: add
-     #   path: /spec/type
-      #  value: LoadBalancer

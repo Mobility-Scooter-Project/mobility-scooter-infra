@@ -12,9 +12,8 @@ import { ComputeKeypairV2 } from "../../../.gen/providers/openstack/compute-keyp
 
 export type k3sServerModuleProps = {
     Security: SecurityModule;
-    ENVIRONMENT: string;
     DEFAULT_IMAGE_NAME: string;
-    K3S_SERVER_FLAVOR_NAME?: string
+    K3S_HEAD_FLAVOR_NAME?: string
 }
 
 export class K3sServerModule extends Construct {
@@ -22,53 +21,55 @@ export class K3sServerModule extends Construct {
         super(scope, id);
 
         const { DEFAULT_IMAGE_NAME, Security } = props;
-        const k3sServer_FLAVOR_NAME = props.K3S_SERVER_FLAVOR_NAME || "m3.small";
+        const K3S_HEAD_FLAVOR_NAME = props.K3S_HEAD_FLAVOR_NAME || "m3.small";
 
-        const k3sServerKeyPair = new ComputeKeypairV2(this, `k3s-server-keypair`, {
-            name: `k3s-server-keypair`,
+        const k3sHeadKeyPair = new ComputeKeypairV2(this, `k3s-head-keypair`, {
+            name: `k3s-head-keypair`,
         });
 
-        const k3sServerSecurityGroup = new NetworkingSecgroupV2(this, `k3s-server-security-group`, {
-            name: `-k3s-server-security-group`,
-            description: 'Allow PostgreSQL traffic',
-        });
-
-        const defaultNet = new DataOpenstackNetworkingNetworkV2(this, `default-net`, {
+        // Jetstream recommends using the auto_allocated_network
+        const defaultNet = new DataOpenstackNetworkingNetworkV2(this, `default-network`, {
             name: "auto_allocated_network",
         });
 
-        const k3sServerPort = new NetworkingPortV2(this, `k3s-server-port`, {
+        /**
+         * The order and dependencies of the resources are important.
+         * Openstack will not allow the the provisioners to run if the
+         * resources are not created in the correct order and assigned
+         * in this exact way.
+         */
+        const k3sHeadPort = new NetworkingPortV2(this, `k3s-head-port`, {
             networkId: defaultNet.id,
-            securityGroupIds: [k3sServerSecurityGroup.id, Security.getSshSecurityGroup().id],
+            securityGroupIds: [Security.getSshSecurityGroup().id],
         });
 
-        const k3sServerInstance = new ComputeInstanceV2(this, `k3s-server`, {
-            name: `k3s-server`,
+        const k3sHeadInstance = new ComputeInstanceV2(this, `k3s-head`, {
+            name: `k3s-head`,
             imageName: DEFAULT_IMAGE_NAME,
-            flavorName: k3sServer_FLAVOR_NAME,
-            keyPair: k3sServerKeyPair.name,
-            network: [{ port: k3sServerPort.id }],
-            dependsOn: [k3sServerPort],
+            flavorName: K3S_HEAD_FLAVOR_NAME,
+            keyPair: k3sHeadKeyPair.name,
+            network: [{ port: k3sHeadPort.id }],
+            dependsOn: [k3sHeadPort],
         });
 
-        const k3sServerInstanceIp = new NetworkingFloatingipV2(this, `k3s-server-ip`, {
+        const k3sHeadInstanceIp = new NetworkingFloatingipV2(this, `k3s-head-ip`, {
             pool: "public",
-            portId: k3sServerPort.id,
-            dependsOn: [k3sServerPort],
+            portId: k3sHeadPort.id,
+            dependsOn: [k3sHeadPort],
         });
 
-        const k3sServerIpAssociate = new NetworkingFloatingipAssociateV2(this, `k3s-server-ip-associate`, {
-            floatingIp: k3sServerInstanceIp.address,
-            portId: k3sServerPort.id,
-            dependsOn: [k3sServerInstanceIp],
+        const k3sHeadIpAssociate = new NetworkingFloatingipAssociateV2(this, `k3s-head-ip-associate`, {
+            floatingIp: k3sHeadInstanceIp.address,
+            portId: k3sHeadPort.id,
+            dependsOn: [k3sHeadInstanceIp],
         });
 
-        new Resource(this, `k3s-server-instance-setup`, {
-            dependsOn: [k3sServerIpAssociate, k3sServerInstanceIp, k3sServerInstance],
+        new Resource(this, `k3s-head-instance-setup`, {
+            dependsOn: [k3sHeadIpAssociate, k3sHeadInstanceIp, k3sHeadInstance],
             provisioners: [{
             type: "file",
-            source: `${process.cwd()}/../scripts/setup-k3s-server.sh`,
-            destination: "/tmp/setup-k3s-server.sh",
+            source: `${process.cwd()}/../scripts/setup-k3s-head.sh`,
+            destination: "/tmp/setup-k3s-head.sh",
             },
             {
             type: "file",
@@ -78,30 +79,29 @@ export class K3sServerModule extends Construct {
             {
             type: "remote-exec",
             inline: [
-                "chmod +x /tmp/setup-k3s-server.sh",
-                `sudo FLOATING_IP=${k3sServerInstanceIp.address} INSTANCE_ID=${k3sServerInstance.id} /tmp/setup-k3s-server.sh`,
+                "chmod +x /tmp/setup-k3s-head.sh",
+                `sudo FLOATING_IP=${k3sHeadInstanceIp.address} INSTANCE_ID=${k3sHeadInstance.id} /tmp/setup-k3s-head.sh`,
             ]
             },
+            // This copies the cluster config to the local machine for developer use
             {
             type: "local-exec",
             command: [
                 "mkdir -p /tmp/ssh",
-                `echo "${k3sServerKeyPair.privateKey}" > /tmp/ssh/k3s_private_key`,
+                `echo "${k3sHeadKeyPair.privateKey}" > /tmp/ssh/k3s_private_key`,
                 "chmod 600 /tmp/ssh/k3s_private_key",
-                `ssh -o StrictHostKeyChecking=no -i /tmp/ssh/k3s_private_key ubuntu@${k3sServerInstanceIp.address} "sudo cat ~/local-cluster.config" > ${process.cwd()}/../cluster.config`,
-                `sed -i "s/127.0.0.1/${k3sServerInstanceIp.address}/g" ${process.cwd()}/../cluster.config`
+                `ssh -o StrictHostKeyChecking=no -i /tmp/ssh/k3s_private_key ubuntu@${k3sHeadInstanceIp.address} "sudo cat ~/local-cluster.config" > ${process.cwd()}/../cluster.config`,
+                `sed -i "s/127.0.0.1/${k3sHeadInstanceIp.address}/g" ${process.cwd()}/../cluster.config`
             ].join(" && ")
             }
             ],
+            // for some reason, using password authentication does not work
             connection: {
             type: "ssh",
-            host: k3sServerInstanceIp.address,
-            privateKey: k3sServerKeyPair.privateKey,
+            host: k3sHeadInstanceIp.address,
+            privateKey: k3sHeadKeyPair.privateKey,
             user: "ubuntu",
             },
         })
-        new TerraformOutput(this, `k3s-server-ip-output`, {
-            value: k3sServerInstanceIp.address,
-        });
     }
 }
