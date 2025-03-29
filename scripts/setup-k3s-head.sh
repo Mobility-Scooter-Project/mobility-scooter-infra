@@ -27,12 +27,20 @@ kubectl patch node "$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
 kubectl create secret -n kube-system generic cloud-config --from-file=/tmp/cluster/base/openstack/cloud.conf || true
 kubectl apply -k /tmp/cluster/base/openstack
 
-echo "Waiting for Traefik to be assigned an external IP..."
+echo "Waiting for Traefik to be ready..."
 until kubectl get svc -n kube-system traefik &>/dev/null; do
   sleep 2
 done
 
 kubectl apply -k /tmp/cluster/base/traefik
+
+echo "Waiting for Traefik to be assigned an external IP...(this may take a few minutes)"
+until IP=$(kubectl get svc -n kube-system traefik -o jsonpath="{.status.loadBalancer.ingress[0].ip}" 2>/dev/null) && [ -n "$IP" ]; do
+  kubectl get svc -n kube-system traefik
+  sleep 10
+done
+echo "Load balancer external IP: $IP"
+
 
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -48,13 +56,38 @@ until kubectl get svc -n argocd-server &>/dev/null; do
   sleep 2
 done
 
-# Its important that the ingress is applied after Traefik is ready, otherwise
-# Traefik will throw an error.
-kubectl apply -f /tmp/cluster/base/argocd/ingress.yaml
 
-IP=$(kubectl get svc -n kube-system traefik -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-echo "Traefik Dashboard is available at http://$IP/dashboard/"
-echo "ArgoCD server is available at https://$IP/argocd"
+# Install OpenStack CLI
+sudo apt-get update && sudo apt-get install python3-designateclient python3-openstackclient -y
+
+echo "Converting cloud.conf to .env format..."
+
+# Process the cloud.conf file into .env format
+while IFS='=' read -r key value; do
+  # Skip comments and empty lines
+  if [[ -n "$key" && ! "$key" =~ ^[[:space:]]*# ]]; then
+    # Trim leading/trailing whitespace and capitalize
+    key=$(echo "$key" | xargs | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+    echo "OS_${key}=${value}"
+  fi
+done < /tmp/cluster/base/openstack/cloud.conf > /tmp/cluster/base/openstack/.env
+
+# Set the environment variables for OpenStack CLI
+# This allows the source command to work in a non-interactive shell
+set -a
+source /tmp/cluster/base/openstack/.env
+set +a
+
+export OS_AUTH_TYPE=v3applicationcredential
+export OS_USER_DOMAIN_NAME=access
+
+## Assign DNS records to the load balancer IP
+DOMAIN=cis240470.projects.jetstream-cloud.org
+
+openstack recordset create --type A --record "$IP" $DOMAIN. argocd
+openstack recordset create --type A --record "$IP" $DOMAIN. traefik
+
+# The trailing sla
+echo "Traefik Dashboard is available at http://traefik.$DOMAIN/dashboard/"
+echo "ArgoCD server is available at https://argocd.$DOMAIN"
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
-
-# TODO: assign dns records
