@@ -1,6 +1,6 @@
 {
-  "name": "mobility-scooter-web-infra",
-  "version": "1.0.0",
+  "name": "mobility-scooter-infra",
+  "version": "0.0.1",
   "main": "main.js",
   "types": "main.ts",
   "license": "MPL-2.0",

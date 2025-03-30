@@ -6,5 +6,5 @@ application-credential-secret=your-application-credential-secret
 
 [LoadBalancer]
 use-octavia=true
-subnet-id=your-subnet-id
+subnet-id=your-subnet-id # auto_allocated_network in Jetstream
 manage-security-groups=true
