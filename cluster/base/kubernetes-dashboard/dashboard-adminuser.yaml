@@ -1,6 +1,0 @@
-# dashboard-adminuser.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: dashboard-adminuser
-  namespace: kubernetes-dashboard

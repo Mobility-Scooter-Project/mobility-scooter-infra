@@ -6,13 +6,15 @@ set -e
 export KUBECONFIG=/home/ubuntu/local-cluster.config
 
 # This script needs to run as root in order to access /home/ubuntu
-# Servicelb is disabled because it is not necessary with Open Stack Cloud Controller Manager.
+# Servicelb is disabled because it is conflicts with Open Stack Cloud Controller Manager.
 # The floating IP is passed to the script via an environment variable to allow TLS with external
 # access.
 echo "Installing k3s..."
 sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig=$KUBECONFIG --disable=servicelb --tls-san $FLOATING_IP --tls-san 127.0.0.1 --disable-cloud-controller kubelet-arg cloud-provider=external --write-kubeconfig-mode=644" sh -
 
 echo "Waiting for k3s to be ready..."
+# Add an extra delay to ensure the node is ready - sometimes the check below it is not enough
+sleep 5
 until kubectl get nodes &>/dev/null; do
   sleep 2
 done
@@ -41,12 +43,13 @@ until IP=$(kubectl get svc -n kube-system traefik -o jsonpath="{.status.loadBala
 done
 echo "Load balancer external IP: $IP"
 
-
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+# Install Headlamp
+kubectl apply -k /tmp/cluster/base/headlamp
+kubectl -n kube-system create serviceaccount headlamp-admin
+kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin
 
 # Install ArgoCD
 kubectl apply -k /tmp/cluster/base/argocd
@@ -84,10 +87,13 @@ export OS_USER_DOMAIN_NAME=access
 ## Assign DNS records to the load balancer IP
 DOMAIN=cis240470.projects.jetstream-cloud.org
 
-openstack recordset create --type A --record "$IP" $DOMAIN. argocd
-openstack recordset create --type A --record "$IP" $DOMAIN. traefik
+openstack recordset create --type A --record "$IP" $DOMAIN. argocd || true
+openstack recordset create --type A --record "$IP" $DOMAIN. traefik || true
+openstack recordset create --type A --record "$IP" $DOMAIN. dashboard || true
 
-# The trailing sla
-echo "Traefik Dashboard is available at http://traefik.$DOMAIN/dashboard/"
+# The trailing slash is important for the Traefik dashboard URL IngressRoute
+echo "Traefik dashboard is available at http://traefik.$DOMAIN/dashboard/"
 echo "ArgoCD server is available at https://argocd.$DOMAIN"
-kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
+echo "Argo initial admin password: $(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d)"
+echo "Headlamp is available at http://headlamp.$DOMAIN"
+echo "Headlamp admin token $(kubectl create clusterrolebinding headlamp-admin --serviceaccount=kube-system:headlamp-admin --clusterrole=cluster-admin)"
