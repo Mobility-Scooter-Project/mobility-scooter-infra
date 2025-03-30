@@ -10,6 +10,7 @@ Below is a brief list of technologies used by in this repo. For a more detailed 
 - [K3s](https://docs.k3s.io/)
     - [Traefik](https://doc.traefik.io/traefik/providers/kubernetes-crd/)
     - [cert-manager](https://cert-manager.io/)
+    - [Headlamp](https://headlamp.dev/)
     - [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)
     - [Kargo](https://kargo.io/)
 
