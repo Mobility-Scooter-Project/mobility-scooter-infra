@@ -3,9 +3,13 @@ kind: IngressRoute
 metadata:
   name: traefik-dashboard
 spec:
+  entryPoints:
+    - websecure
   routes:
   - match: Host("traefik.cis240470.projects.jetstream-cloud.org") && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
     kind: Rule
     services:
     - name: api@internal
       kind: TraefikService
+  tls:
+    secretName: traefik-dashboard-tls

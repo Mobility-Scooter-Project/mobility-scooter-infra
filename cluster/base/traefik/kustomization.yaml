@@ -6,3 +6,4 @@ namespace: kube-system
 resources:
 - dashboard.yaml
 - dashboard-ingress.yaml
+- certificate.yaml

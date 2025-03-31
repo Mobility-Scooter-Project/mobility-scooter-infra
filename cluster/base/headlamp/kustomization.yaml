@@ -6,3 +6,4 @@ namespace: kube-system
 resources:
 - https://raw.githubusercontent.com/kinvolk/headlamp/main/kubernetes-headlamp.yaml
 - ingress.yaml
+- certificate.yaml
