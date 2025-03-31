@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   entryPoints:
-    - websecure
+    - web
   routes:
     - kind: Rule
       match: Host(`dashboard.cis240470.projects.jetstream-cloud.org`)
@@ -13,5 +13,3 @@ spec:
       services:
         - name: headlamp
           port: 80
-  tls:
-    secretName: headlamp-tls
