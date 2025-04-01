@@ -2,14 +2,16 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: headlamp
-  namespace: kube-system
+  namespace: headlamp
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
     - kind: Rule
       match: Host(`dashboard.cis240470.projects.jetstream-cloud.org`)
       priority: 10
       services:
-        - name: headlamp
+        - name: headlamp-oidc
           port: 80
+  tls:
+    secretName: headlamp-tls

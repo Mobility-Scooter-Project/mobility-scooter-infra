@@ -8,5 +8,5 @@ spec:
   dnsNames:
     - "argocd.cis240470.projects.jetstream-cloud.org"
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-prod
     kind: ClusterIssuer

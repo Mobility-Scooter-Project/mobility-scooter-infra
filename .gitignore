@@ -13,3 +13,4 @@ credentials.*
 .env
 cloud.conf
 cluster.config
+values.yaml

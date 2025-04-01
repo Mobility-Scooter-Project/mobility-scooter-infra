@@ -51,7 +51,9 @@ echo "Load balancer external IP: $IP"
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Install Keycloak
+# NOTE: Keycloak with OCIDC must be installed via helm outside of this script
+# https://headlamp.dev/docs/latest/installation/in-cluster/keycloak/
+# Generate keycloak ingress and TLS cert for now
 kubectl apply -k /tmp/cluster/base/keycloak
 
 # Install Headlamp
