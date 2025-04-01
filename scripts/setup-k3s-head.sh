@@ -51,6 +51,9 @@ echo "Load balancer external IP: $IP"
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+# Install Keycloak
+kubectl apply -k /tmp/cluster/base/keycloak
+
 # Install Headlamp
 kubectl apply -k /tmp/cluster/base/headlamp
 kubectl -n kube-system create serviceaccount headlamp-admin
@@ -91,9 +94,10 @@ export OS_USER_DOMAIN_NAME=access
 ## Assign DNS records to the load balancer IP
 DOMAIN=cis240470.projects.jetstream-cloud.org
 
-openstack recordset create --type A --record "$IP" $DOMAIN. argocd
 openstack recordset create --type A --record "$IP" $DOMAIN. traefik
+openstack recordset create --type A --record "$IP" $DOMAIN. keycloak
 openstack recordset create --type A --record "$IP" $DOMAIN. dashboard
+openstack recordset create --type A --record "$IP" $DOMAIN. argocd
 
 # The trailing slash is important for the Traefik dashboard URL IngressRoute
 echo "Traefik dashboard is available at http://traefik.$DOMAIN/dashboard/"
