@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: argocd-tls-cert
-  namespace: argocd
+  name: keycloak-tls-cert
+  namespace: keycloak
 spec:
-  secretName: argocd-tls
+  secretName: keycloak-tls
   dnsNames:
-    - "argocd.cis240470.projects.jetstream-cloud.org"
+    - "keycloak.cis240470.projects.jetstream-cloud.org"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
