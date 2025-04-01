@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: mobility-scooter-project
+  namespace: argocd
+spec:
+  generators:
+  - scmProvider:
+      cloneProtocol: https
+      github:
+        # The GitHub organization to scan.
+        organization: mobility-scooter-project
+        allBranches: true
+        tokenRef:
+          secretName: argocd-github
+          key: token
+      filters:
+        - repositoryMatch: .*
+          pathsExist: [applicationset.yaml]
+  goTemplate: true
+  template:
+    metadata:
+      name: '{{ .repository | normalize }}'
+    spec:
+      source:
+        repoURL: '{{ .url }}'
+        targetRevision: '{{ .branch }}'
+        path: ./
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default
