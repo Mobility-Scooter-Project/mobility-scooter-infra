@@ -1,0 +1,96 @@
+Name:             external-dns-6fc77fdfd-tm9gp
+Namespace:        default
+Priority:         0
+Service Account:  external-dns
+Node:             k3s-head/10.3.83.121
+Start Time:       Wed, 02 Apr 2025 11:18:43 -0700
+Labels:           app.kubernetes.io/instance=external-dns
+                  app.kubernetes.io/name=external-dns
+                  pod-template-hash=6fc77fdfd
+Annotations:      kubectl.kubernetes.io/restartedAt: 2025-04-02T11:18:43-07:00
+Status:           Running
+SeccompProfile:   RuntimeDefault
+IP:               10.42.0.98
+IPs:
+  IP:           10.42.0.98
+Controlled By:  ReplicaSet/external-dns-6fc77fdfd
+Containers:
+  external-dns:
+    Container ID:  containerd://12f71e0d22b1edb7f4a8b3d632d744a86ba5ca07da778061bbc900bae23e98a5
+    Image:         registry.k8s.io/external-dns/external-dns:v0.15.1
+    Image ID:      k8s.gcr.io/external-dns/external-dns@sha256:4f3ba4c2bd28030caad05bb7b47fbf47549a46d5e8443b74f0be463550b4fc2b
+    Port:          7979/TCP
+    Host Port:     0/TCP
+    Args:
+      --log-level=info
+      --log-format=text
+      --interval=1m
+      --source=service
+      --source=ingress
+      --policy=upsert-only
+      --registry=txt
+      --provider=webhook
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 02 Apr 2025 11:19:17 -0700
+      Finished:     Wed, 02 Apr 2025 11:19:25 -0700
+    Ready:          False
+    Restart Count:  2
+    Liveness:       http-get http://:http/healthz delay=10s timeout=5s period=10s #success=1 #failure=2
+    Readiness:      http-get http://:http/healthz delay=5s timeout=5s period=10s #success=1 #failure=6
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-tclb9 (ro)
+  webhook:
+    Container ID:   containerd://04c0595b1b7fece97b2b6c6665058388ef7816ca30f7692df2625bc35511863f
+    Image:          ghcr.io/inovex/external-dns-openstack-webhook:1.0.0
+    Image ID:       ghcr.io/inovex/external-dns-openstack-webhook@sha256:d3ad56a9902d58ab63e761d11aa7e4de6ea0129ba7b35dffa9d7d3ccb2ca0336
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       CrashLoopBackOff
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 02 Apr 2025 11:19:18 -0700
+      Finished:     Wed, 02 Apr 2025 11:19:18 -0700
+    Ready:          False
+    Restart Count:  3
+    Liveness:       http-get http://:http-webhook/healthz delay=10s timeout=5s period=10s #success=1 #failure=2
+    Readiness:      http-get http://:http-webhook/healthz delay=5s timeout=5s period=10s #success=1 #failure=6
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-tclb9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-tclb9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  58s                default-scheduler  Successfully assigned default/external-dns-6fc77fdfd-tm9gp to k3s-head
+  Normal   Pulled     24s (x3 over 57s)  kubelet            Container image "registry.k8s.io/external-dns/external-dns:v0.15.1" already present on machine
+  Normal   Created    24s (x3 over 57s)  kubelet            Created container: external-dns
+  Normal   Started    24s (x3 over 57s)  kubelet            Started container external-dns
+  Normal   Pulled     24s (x4 over 57s)  kubelet            Container image "ghcr.io/inovex/external-dns-openstack-webhook:1.0.0" already present on machine
+  Normal   Created    24s (x4 over 57s)  kubelet            Created container: webhook
+  Normal   Started    23s (x4 over 57s)  kubelet            Started container webhook
+  Warning  BackOff    7s (x17 over 55s)  kubelet            Back-off restarting failed container webhook in pod external-dns-6fc77fdfd-tm9gp_default(901830e7-1b55-45d4-a9b1-4c74d1e4fa85)
+  Warning  BackOff    7s (x8 over 45s)   kubelet            Back-off restarting failed container external-dns in pod external-dns-6fc77fdfd-tm9gp_default(901830e7-1b55-45d4-a9b1-4c74d1e4fa85)
