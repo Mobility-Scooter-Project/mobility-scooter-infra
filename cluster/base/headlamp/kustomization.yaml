@@ -5,4 +5,3 @@ namespace: headlamp
 
 resources:
 - ingress.yaml
-- certificate.yaml

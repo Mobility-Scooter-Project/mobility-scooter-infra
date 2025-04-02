@@ -1,17 +1,26 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: keycloak
   namespace: keycloak
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`keycloak.cis240470.projects.jetstream-cloud.org`)
-      priority: 10
-      services:
-        - name: keycloak
-          port: 8080
+  ingressClassName: traefik
+  rules:
+    - host: keycloak.cis240470.projects.jetstream-cloud.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
   tls:
-    secretName: keycloak-tls
+    - secretName: keycloak-cert
+      hosts:
+        - keycloak.cis240470.projects.jetstream-cloud.org

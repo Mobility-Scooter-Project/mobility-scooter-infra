@@ -6,7 +6,6 @@ namespace: keycloak
 resources:
   - namespace.yaml
   - https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/refs/heads/main/kubernetes/keycloak.yaml
-  - certificate.yaml
   - ingress.yaml
 
 patches:

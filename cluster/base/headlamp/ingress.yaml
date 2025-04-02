@@ -1,17 +1,26 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: headlamp
   namespace: headlamp
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`dashboard.cis240470.projects.jetstream-cloud.org`)
-      priority: 10
-      services:
-        - name: headlamp-oidc
-          port: 80
+  ingressClassName: traefik
+  rules:
+    - host: dashboard.cis240470.projects.jetstream-cloud.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: headlamp-oidc
+                port:
+                  number: 80
   tls:
-    secretName: headlamp-tls
+    - hosts:
+        - dashboard.cis240470.projects.jetstream-cloud.org
+      secretName: headlamp-cert
