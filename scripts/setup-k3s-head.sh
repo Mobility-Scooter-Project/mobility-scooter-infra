@@ -51,11 +51,6 @@ echo "Load balancer external IP: $IP"
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Install external-dns
-helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
-kubectl create secret generic oscloudsyaml --namespace external-dns --from-file=/tmp/cluster/base/external-dns/clouds.yaml
-helm upgrade --install external-dns external-dns/external-dns --version 1.15.2 -f /tmp/cluster/base/external-dns/values.yaml
-
 # NOTE: Keycloak with OCIDC must be installed via helm outside of this script
 # https://headlamp.dev/docs/latest/installation/in-cluster/keycloak/
 # Generate keycloak ingress and TLS cert for now
@@ -101,10 +96,13 @@ export OS_USER_DOMAIN_NAME=access
 ## Assign DNS records to the load balancer IP
 DOMAIN=cis240470.projects.jetstream-cloud.org
 
+openstack recordset create --type A --record "$IP" $DOMAIN. traefik
 openstack recordset create --type A --record "$IP" $DOMAIN. keycloak
 openstack recordset create --type A --record "$IP" $DOMAIN. dashboard
 openstack recordset create --type A --record "$IP" $DOMAIN. argocd
 
+# The trailing slash is important for the Traefik dashboard URL IngressRoute
+echo "Traefik dashboard is available at http://traefik.$DOMAIN/dashboard/"
 echo "ArgoCD server is available at https://argocd.$DOMAIN"
 echo "Argo initial admin password: $(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d)"
 echo "Headlamp is available at http://headlamp.$DOMAIN"
