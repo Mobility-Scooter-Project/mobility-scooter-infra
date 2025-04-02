@@ -20,7 +20,7 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 443
+                  number: 80 # Note: This should be 80, not 443, despite being on WebSecure
   tls:
     - hosts:
         - argocd.cis240470.projects.jetstream-cloud.org
