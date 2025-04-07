@@ -6,44 +6,6 @@ namespace: argocd
 resources:
 - namespace.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-- ingress-https.yaml
-- ingress-grpc.yaml
-- applicationset.yaml
-
-patches:
-- path: cmd-commands-cm.yaml
-  target:
-    kind: ConfigMap
-    name: argocd-cmd-params-cm
-
-- target:
-    name: argocd-cm
-    kind: ConfigMap
-  patch: |-
-      - op: add
-        path: /data
-        value: {}
-      - op: add
-        path: /data/url
-        value: https://argocd.cis240470.projects.jetstream-cloud.org
-      - op: add
-        path: /data/oidc.config
-        value: |
-          name: Keycloak
-          issuer: https://keycloak.cis240470.projects.jetstream-cloud.org/realms/mobility-scooter-project
-          clientID: argocd
-          clientSecret: $oidc.keycloak.clientSecret
-          requestedScopes: ["openid", "profile", "email", "groups"]
-- target:
-    name: argocd-rbac-cm
-    kind: ConfigMap
-  patch: |-
-      - op: add
-        path: /data
-        value: {}
-      - op: add
-        path: /data/policy.csv
-        value: |
-          g, ArgoCDAdmins, role:admin
-    
+- ingress.yaml
+- certificate.yaml
 
