@@ -1,0 +1,6 @@
+config:
+  oidc:
+    clientID: "keycloak-headlamp"
+    clientSecret: "your-client-secret-here"
+    issuerURL: "https://keycloak.cis240470.projects.jetstream-cloud.org/realms/mobility-scooter-project"
+    scopes: "email,profile"

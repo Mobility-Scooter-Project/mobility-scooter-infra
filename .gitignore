@@ -13,3 +13,5 @@ credentials.*
 .env
 cloud.conf
 cluster.config
+cluster/base/headlamp/values.yaml
+clouds.yaml

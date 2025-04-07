@@ -9,5 +9,3 @@ resources:
 - ingress.yaml
 - certificate.yaml
 
-patchesStrategicMerge:
-- cmd-commands-cm.yaml
