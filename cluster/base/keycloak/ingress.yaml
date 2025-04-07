@@ -1,27 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: headlamp
-  namespace: headlamp
+  name: keycloak
+  namespace: keycloak
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: headlamp.cis240470.projects.jetstream-cloud.org
+    external-dns.alpha.kubernetes.io/hostname: keycloak.cis240470.projects.jetstream-cloud.org
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
   rules:
-    - host: dashboard.cis240470.projects.jetstream-cloud.org
+    - host: keycloak.cis240470.projects.jetstream-cloud.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: headlamp-oidc
+                name: keycloak
                 port:
-                  number: 80
+                  number: 8080
   tls:
-    - hosts:
-        - dashboard.cis240470.projects.jetstream-cloud.org
-      secretName: headlamp-cert
+    - secretName: keycloak-cert
+      hosts:
+        - keycloak.cis240470.projects.jetstream-cloud.org

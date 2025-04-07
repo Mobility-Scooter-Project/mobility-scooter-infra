@@ -51,6 +51,11 @@ echo "Load balancer external IP: $IP"
 # Install helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+# NOTE: Keycloak with OCIDC must be installed via helm outside of this script
+# https://headlamp.dev/docs/latest/installation/in-cluster/keycloak/
+# Generate keycloak ingress and TLS cert for now
+kubectl apply -k /tmp/cluster/base/keycloak
+
 # Install Headlamp
 kubectl apply -k /tmp/cluster/base/headlamp
 kubectl -n kube-system create serviceaccount headlamp-admin
@@ -64,36 +69,7 @@ until kubectl get svc -n argocd-server &>/dev/null; do
   sleep 2
 done
 
-# Install OpenStack CLI
-sudo apt-get update && sudo apt-get install python3-designateclient python3-openstackclient -y
-
-echo "Converting cloud.conf to .env format..."
-
-# Process the cloud.conf file into .env format
-while IFS='=' read -r key value; do
-  # Skip comments and empty lines
-  if [[ -n "$key" && ! "$key" =~ ^[[:space:]]*# ]]; then
-    # Trim leading/trailing whitespace and capitalize
-    key=$(echo "$key" | xargs | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-    echo "OS_${key}=${value}"
-  fi
-done < /tmp/cluster/base/openstack/cloud.conf > /tmp/cluster/base/openstack/.env
-
-# Set the environment variables for OpenStack CLI
-# This allows the source command to work in a non-interactive shell
-set -a
-source /tmp/cluster/base/openstack/.env
-set +a
-
-export OS_AUTH_TYPE=v3applicationcredential
-export OS_USER_DOMAIN_NAME=access
-
-## Assign DNS records to the load balancer IP
 DOMAIN=cis240470.projects.jetstream-cloud.org
-
-openstack recordset create --type A --record "$IP" $DOMAIN. argocd
-openstack recordset create --type A --record "$IP" $DOMAIN. traefik
-openstack recordset create --type A --record "$IP" $DOMAIN. dashboard
 
 # The trailing slash is important for the Traefik dashboard URL IngressRoute
 echo "Traefik dashboard is available at http://traefik.$DOMAIN/dashboard/"

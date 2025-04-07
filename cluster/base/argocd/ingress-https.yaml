@@ -1,27 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: headlamp
-  namespace: headlamp
+  name: argocd-server
+  namespace: argocd
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: headlamp.cis240470.projects.jetstream-cloud.org
+    external-dns.alpha.kubernetes.io/hostname: argocd.cis240470.projects.jetstream-cloud.org
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
   rules:
-    - host: dashboard.cis240470.projects.jetstream-cloud.org
+    - host: argocd.cis240470.projects.jetstream-cloud.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: headlamp-oidc
+                name: argocd-server
                 port:
-                  number: 80
+                  number: 80 # Note: This should be 80, not 443, despite being on WebSecure
   tls:
     - hosts:
-        - dashboard.cis240470.projects.jetstream-cloud.org
-      secretName: headlamp-cert
+        - argocd.cis240470.projects.jetstream-cloud.org
+      secretName: argocd-server-cert
