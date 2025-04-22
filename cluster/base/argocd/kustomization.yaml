@@ -6,6 +6,7 @@ namespace: argocd
 resources:
 - namespace.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 - ingress-https.yaml
 - ingress-grpc.yaml
 - certificate.yaml
