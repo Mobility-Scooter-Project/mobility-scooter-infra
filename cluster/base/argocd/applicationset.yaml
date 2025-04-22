@@ -16,7 +16,7 @@ spec:
           key: token
       filters:
         - repositoryMatch: .*
-          pathsExist: [applicationset.yaml]
+          pathsExist: [.kube]
   goTemplate: true
   template:
     metadata:
@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: '{{ .url }}'
         targetRevision: '{{ .branch }}'
-        path: ./
+        path: ./.kube
       project: default
       destination:
         server: https://kubernetes.default.svc
