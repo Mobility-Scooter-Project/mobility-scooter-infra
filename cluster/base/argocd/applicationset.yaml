@@ -16,7 +16,7 @@ spec:
           key: token
       filters:
         - repositoryMatch: .*
-          pathsExist: [.kube]
+          pathsExist: [k8s]
   goTemplate: true
   template:
     metadata:
@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: '{{ .url }}'
         targetRevision: '{{ .branch }}'
-        path: ./.kube
+        path: k8s
       project: default
       destination:
         server: https://kubernetes.default.svc
