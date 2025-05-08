@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloud-env
+type: Opaque
+data:
+{{ .Files.Get ".env" | b64enc | indent 2 }}

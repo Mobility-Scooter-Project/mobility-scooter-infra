@@ -1,5 +1,0 @@
-storageClass:
-  enabled: true
-secret:
-  enabled: true
-  name: cloud-config
