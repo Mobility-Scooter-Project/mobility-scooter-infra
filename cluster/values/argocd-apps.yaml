@@ -9,9 +9,9 @@ applicationsets:
           # The GitHub organization to scan.
           organization: mobility-scooter-project
           allBranches: true
-          #tokenRef:
-            #secretName: argocd-github
-            #key: token
+          tokenRef:
+            secretName: argocd-github-token
+            key: token
         filters:
           - repositoryMatch: .*
             pathsExist: [k8s]
