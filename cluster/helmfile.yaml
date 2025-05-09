@@ -33,6 +33,7 @@ releases:
       - ./values/cert-manager.yaml
   - name: designate-certmanager-webhook
     chart: ./charts/designate-certmanager-webhook
+    namespace: cert-manager
     values:
       - ./values/designate-certmanager-webhook.yaml
   - name: argocd

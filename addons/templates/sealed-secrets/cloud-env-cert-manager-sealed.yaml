@@ -6,7 +6,7 @@ metadata:
     sealedsecrets.bitnami.com/cluster-wide: "true"
   creationTimestamp: null
   name: cloud-env
-  namespace: default
+  namespace: cert-manager
 spec:
   encryptedData:
     OS_APPLICATION_CREDENTIAL_ID: AgCRr8xCm2cHDz9Ak8O7TNv1WMEyDjdJOmWEMjyrf/hWppOQg7MvQwS56/0AurWYVnGeigYXmKl3F4bSn1K/RJMqM0vHiMQaExWbuI472u3D+vm56e+E22RfrthXzWgw5makCj1BCfTGHgZZUpdYy+P6ORYzpt+zzZBrKRupVM7N9A04sC/19JXGyXu2YbdBN7tm8J4vsnbdsg2G1wCd6g5MCmYeLL1MwPOySgPkl79+2peJuGqRheOAnX00TvIPUVYhItnY5wUeYw54AOSPpOT28E2WpRCjgjlDEytFvXSSdtC5gt/pwE3ZMf97PSUhJNfMI4Mf+H4OixOt8KcR7JPA9nipHT1kyVaG6kaDuKFuD4Ru3cGr/n0xM8Ero74n5eH81UKpN2/t1mFjo67zFua8viSup7Tuupc/6njXCUb2u1Z6byaKiunJaKFyxBC57vpu6ay1SncBgLYSoQGqEs3bB2jo+T6SH61Dv6wOzWjWAtOdVhQoasEn7fWcV1pYGY9AxD9bl3u+lIbEHdPURYT3GDDOXIHPTtmTDAGb5qFYuOMpuwPyLSgxKVVeMysSh6WM++mKK1YmUzTB+ht4s608OfqzCYhw9il0sIlGoobh2SpC7qLujz+NCBwxYt62/UJq8/CJeSBCAPaJXWsRBEaBuN/lZ/sOk4te678Nc4FpzJEem6tT4Fx60vu+z8u3/dekjqPJ5o6HyUnyXQs4IDxnkV8qDyQ3W4VcAM3iy4XlLA==
@@ -19,4 +19,4 @@ spec:
         sealedsecrets.bitnami.com/cluster-wide: "true"
       creationTimestamp: null
       name: cloud-env
-      namespace: default
+      namespace: cert-manager
