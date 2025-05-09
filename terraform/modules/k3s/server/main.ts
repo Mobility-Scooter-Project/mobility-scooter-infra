@@ -21,7 +21,7 @@ export class K3sServerModule extends Construct {
         super(scope, id);
 
         const { DEFAULT_IMAGE_NAME, Security } = props;
-        const K3S_HEAD_FLAVOR_NAME = props.K3S_HEAD_FLAVOR_NAME || "m3.medium";
+        const K3S_HEAD_FLAVOR_NAME = props.K3S_HEAD_FLAVOR_NAME || "m3.quad";
 
         const k3sHeadKeyPair = new ComputeKeypairV2(this, `k3s-head-keypair`, {
             name: `k3s-head-keypair`,

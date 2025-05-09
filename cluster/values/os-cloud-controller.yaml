@@ -1,0 +1,8 @@
+# https://github.com/kubernetes/cloud-provider-openstack/blob/master/charts/openstack-cloud-controller-manager/values.yaml
+nodeSelector:
+  node-role.kubernetes.io/control-plane: "true" # allows us to schedule on a single node
+
+secret:
+  enabled: true
+  create: false
+  name: cloud-config

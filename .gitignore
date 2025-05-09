@@ -12,6 +12,8 @@ tsconfig.tsbuildinfo
 credentials.*
 .env
 cloud.conf
+cloud-config.json
 cluster.config
 cluster/base/headlamp/values.yaml
 clouds.yaml
+secrets/unsealed

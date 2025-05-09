@@ -1,0 +1,6 @@
+# https://github.com/kubernetes/cloud-provider-openstack/blob/master/charts/cinder-csi-plugin/values.yaml
+storageClass:
+  enabled: true
+secret:
+  enabled: true
+  name: cloud-config

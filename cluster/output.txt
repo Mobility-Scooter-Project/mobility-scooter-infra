@@ -1,0 +1,76 @@
+Name:                   external-dns
+Namespace:              default
+CreationTimestamp:      Thu, 08 May 2025 18:31:10 -0700
+Labels:                 app.kubernetes.io/instance=external-dns
+                        app.kubernetes.io/managed-by=Helm
+                        app.kubernetes.io/name=external-dns
+                        app.kubernetes.io/version=0.16.1
+                        helm.sh/chart=external-dns-8.8.2
+Annotations:            deployment.kubernetes.io/revision: 3
+                        meta.helm.sh/release-name: external-dns
+                        meta.helm.sh/release-namespace: default
+Selector:               app.kubernetes.io/instance=external-dns,app.kubernetes.io/name=external-dns
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:           app.kubernetes.io/instance=external-dns
+                    app.kubernetes.io/managed-by=Helm
+                    app.kubernetes.io/name=external-dns
+                    app.kubernetes.io/version=0.16.1
+                    helm.sh/chart=external-dns-8.8.2
+  Annotations:      kubectl.kubernetes.io/restartedAt: 2025-05-09T12:35:23-07:00
+  Service Account:  external-dns
+  Containers:
+   external-dns:
+    Image:           docker.io/bitnami/external-dns:0.16.1-debian-12-r6
+    Port:            7979/TCP
+    Host Port:       0/TCP
+    SeccompProfile:  RuntimeDefault
+    Args:
+      --metrics-address=:7979
+      --log-level=info
+      --log-format=text
+      --policy=upsert-only
+      --provider=designate
+      --registry=txt
+      --interval=1m
+      --source=service
+      --source=ingress
+    Limits:
+      cpu:                150m
+      ephemeral-storage:  2Gi
+      memory:             192Mi
+    Requests:
+      cpu:                100m
+      ephemeral-storage:  50Mi
+      memory:             128Mi
+    Liveness:             tcp-socket :http delay=10s timeout=5s period=10s #success=1 #failure=2
+    Readiness:            http-get http://:http/healthz delay=5s timeout=5s period=10s #success=1 #failure=6
+    Environment Variables from:
+      cloud-env   Secret  Optional: false
+    Environment:  <none>
+    Mounts:
+      /tmp from empty-dir (rw,path="tmp-dir")
+  Volumes:
+   empty-dir:
+    Type:          EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:        
+    SizeLimit:     <unset>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  external-dns-7fdf4b688c (0/0 replicas created), external-dns-5bc9764c55 (0/0 replicas created)
+NewReplicaSet:   external-dns-759bdc754d (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  6m16s  deployment-controller  Scaled up replica set external-dns-5bc9764c55 from 0 to 1
+  Normal  ScalingReplicaSet  6m4s   deployment-controller  Scaled down replica set external-dns-7fdf4b688c from 1 to 0
+  Normal  ScalingReplicaSet  2m59s  deployment-controller  Scaled up replica set external-dns-759bdc754d from 0 to 1
+  Normal  ScalingReplicaSet  2m46s  deployment-controller  Scaled down replica set external-dns-5bc9764c55 from 1 to 0

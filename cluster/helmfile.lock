@@ -1,0 +1,25 @@
+version: v1.0.0
+dependencies:
+- name: argo-cd
+  repository: https://argoproj.github.io/argo-helm
+  version: 8.0.0
+- name: argocd-apps
+  repository: https://argoproj.github.io/argo-helm
+  version: 2.0.2
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v1.17.2
+- name: external-dns
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.8.2
+- name: openstack-cinder-csi
+  repository: https://kubernetes.github.io/cloud-provider-openstack
+  version: 2.32.0
+- name: openstack-cloud-controller-manager
+  repository: https://kubernetes.github.io/cloud-provider-openstack
+  version: 2.32.0
+- name: sealed-secrets
+  repository: https://bitnami-labs.github.io/sealed-secrets
+  version: 2.17.2
+digest: sha256:7bece322d15dbaa3980d2c6588b8ccb226184824706ec2d4b3202ca6e193adcc
+generated: '2025-05-09T12:00:15.223475902-07:00'

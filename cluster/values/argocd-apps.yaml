@@ -1,0 +1,36 @@
+
+# https://github.com/argoproj/argo-helm/blob/main/charts/argocd-apps/values.yaml
+applicationsets:
+  mobility-scooter-project:
+    generators:
+    - scmProvider:
+        cloneProtocol: https
+        github:
+          # The GitHub organization to scan.
+          organization: mobility-scooter-project
+          allBranches: true
+          #tokenRef:
+            #secretName: argocd-github
+            #key: token
+        filters:
+          - repositoryMatch: .*
+            pathsExist: [k8s]
+    goTemplate: true
+    template:
+      metadata:
+        name: '{{ .repository | normalize }}'
+      spec:
+        source:
+          repoURL: '{{ .url }}'
+          targetRevision: '{{ .branch }}'
+          path: k8s
+        project: default
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: default
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+          syncOptions:
+            - CreateNamespace=true
