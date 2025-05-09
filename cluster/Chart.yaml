@@ -35,9 +35,6 @@ dependencies:
     version: 8.8.2
   - name: designate-certmanager-webhook
     version: 0.6.2
-  - name: cert-manager
-    repository: https://charts.jetstack.io
-    version: v1.17.2
   - name: argo-cd
     repository: oci://ghcr.io/argoproj/argo-helm
     version: 8.0.0

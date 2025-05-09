@@ -6,7 +6,7 @@ openstack-cloud-controller-manager:
 # https://github.com/kubernetes/cloud-provider-openstack/blob/master/charts/cinder-csi-plugin/values.yaml
 csi:
   storageClass:
-  enabled: true
+    enabled: true
   secret:
     enabled: true
     name: cloud-config
@@ -19,11 +19,6 @@ external-dns:
 # ./charts/designate-certmanager-webhook/values.yaml
 designate-certmanager-webhook:
   credentialsSecret: cloud-env
-
-# https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
-cert-manager:
-  crds:
-    enabled: true
 
 # https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd  
 argo-cd:
@@ -48,7 +43,7 @@ argo-cd:
 # https://github.com/argoproj/argo-helm/blob/main/charts/argocd-apps/values.yaml
 argocd-apps:
   applicationsets:
-    "mobility-scooter-project":
+    mobility-scooter-project:
       generators:
       - scmProvider:
           cloneProtocol: https
