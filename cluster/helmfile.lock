@@ -2,10 +2,13 @@ version: v1.0.0
 dependencies:
 - name: argo-cd
   repository: https://argoproj.github.io/argo-helm
-  version: 8.0.0
+  version: 8.0.1
 - name: argocd-apps
   repository: https://argoproj.github.io/argo-helm
   version: 2.0.2
+- name: argocd-image-updater
+  repository: https://argoproj.github.io/argo-helm
+  version: 0.12.1
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.17.2
@@ -21,5 +24,5 @@ dependencies:
 - name: sealed-secrets
   repository: https://bitnami-labs.github.io/sealed-secrets
   version: 2.17.2
-digest: sha256:7bece322d15dbaa3980d2c6588b8ccb226184824706ec2d4b3202ca6e193adcc
-generated: '2025-05-09T12:00:15.223475902-07:00'
+digest: sha256:52ffcb034cdba3e0b154b1cf9c0011be9db91d89411c8b8c225152db4998b251
+generated: '2025-05-13T16:33:40.915719595-07:00'

@@ -46,5 +46,8 @@ releases:
     namespace: argocd
     values:
       - ./values/argocd-apps.yaml
+  - name: argocd-image-updater
+    chart: argo/argocd-image-updater
+    namespace: argocd
   - name: addons
     chart: "../addons"
