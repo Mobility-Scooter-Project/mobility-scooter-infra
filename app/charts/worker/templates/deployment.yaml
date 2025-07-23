@@ -18,7 +18,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}-{{ .Values.appName }}
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-{{ .Values.appName }}-config
