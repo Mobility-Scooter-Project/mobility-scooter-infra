@@ -54,10 +54,10 @@ releases:
   - name: argocd-image-updater
     chart: argo/argocd-image-updater
     namespace: argocd
-  #- name: kargo
-   # chart: kargo/kargo
-    #namespace: kargo
-    #values:
-    #  - ./values/kargo.yaml
+  - name: kargo
+    chart: kargo/kargo
+    namespace: kargo
+    values:
+      - ./values/kargo.yaml
   - name: addons
     chart: "../addons"

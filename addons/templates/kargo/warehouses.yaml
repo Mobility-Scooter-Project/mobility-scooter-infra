@@ -1,0 +1,32 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: dev-warehouse
+  namespace: mswa
+spec:
+  subscriptions:
+    - image:
+        repoURL: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/web
+        imageSelectionStrategy: NewestBuild
+        allowTags: develop
+    - image:
+        repoURL: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/api
+        imageSelectionStrategy: NewestBuild
+        allowTags: develop
+    - image:
+        repoURL: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/worker
+        imageSelectionStrategy: NewestBuild
+        allowTags: develop
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: prod-warehouse
+  namespace: mswa
+spec:
+  subscriptions:
+    - image:
+        repoURL: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/web
+        imageSelectionStrategy: NewestBuild
+        allowTags: main

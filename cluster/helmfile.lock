@@ -15,6 +15,9 @@ dependencies:
 - name: external-secrets
   repository: https://charts.external-secrets.io
   version: 0.18.2
+- name: kargo
+  repository: oci://ghcr.io/akuity/kargo-charts
+  version: 1.6.1
 - name: openstack-cinder-csi
   repository: https://kubernetes.github.io/cloud-provider-openstack
   version: 2.33.0
@@ -24,5 +27,5 @@ dependencies:
 - name: sealed-secrets
   repository: https://bitnami-labs.github.io/sealed-secrets
   version: 2.17.3
-digest: sha256:13aaa5af5bf6b440beecf54c6da0090dc2e908abf9e693102fac311ae80ed520
-generated: '2025-07-22T22:27:48.119145334-07:00'
+digest: sha256:146b55cf79aefcfd7a15efc9b87f730104c03b91283a571e278647fb118df0c6
+generated: '2025-07-23T00:13:43.426953989-07:00'
