@@ -18,7 +18,7 @@ spec:
       containers:
         - name: {{ .Release.Name }}-{{ .Values.appName }}
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.containerPort }}
               name: http-web-svc

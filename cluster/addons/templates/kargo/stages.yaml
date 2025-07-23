@@ -11,30 +11,16 @@ spec:
         name: dev-warehouse
       sources:
         direct: true
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
-  name: uat
-  namespace: mswa
-spec:
-  requestedFreight:
-    - origin:
-        kind: Warehouse
-        name: prod-warehouse
-      sources:
-        direct: true
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Stage
-metadata:
-  name: prod
-  namespace: mswa
-spec:
-  requestedFreight:
-    - origin:
-        kind: Warehouse
-        name: prod-warehouse
-      sources:
-        stages:
-          - uat
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: argocd-update
+          config:
+            apps:
+            - name: mswa-dev
+              sources:
+              - repoURL: https://github.com/Mobility-Scooter-Project/mobility-scooter-infa
+                helm:
+                  images:
+                  - key: web.tag
+                    value: ${{ imageFrom("ghcr.io/mobility-scooter-project/mobility-scooter-web-app/web").Digest }}

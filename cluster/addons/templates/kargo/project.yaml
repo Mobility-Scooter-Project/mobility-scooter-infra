@@ -12,9 +12,5 @@ metadata:
 spec:
   promotionPolicies:
     - stageSelector:
-        name: dev
+        name: develop
       autoPromotionEnabled: true
-    - stageSelector:
-        name: uat
-    - stageSelector:
-        name: prod

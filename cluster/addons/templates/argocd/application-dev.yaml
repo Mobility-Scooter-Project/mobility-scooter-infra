@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: mswa-dev
   namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: mswa:develop
 spec:
   destination:
     namespace: mswa-dev
