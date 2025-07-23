@@ -1,14 +1,14 @@
 api:
   image:
     tag: develop
-  replicas: 1
+  replicas: 2
 
 web:
   image:
     tag: develop
-  replicas: 1
+  replicas: 2
 
 worker:
   image:
     tag: develop
-  replicas: 1
+  replicas: 2
