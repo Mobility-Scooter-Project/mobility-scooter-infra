@@ -1,0 +1,30 @@
+replicas: 1
+appName: api
+image:
+  name: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/api
+  tag: "latest"
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+
+containerPort: 3000
+
+configmap:
+  data:
+    BASE_URL: http://localhost:3000
+    DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    KV_URL: redis://localhost:6379
+    BROKER_URL: localhost
+    STORAGE_PORT: 9000
+    STORAGE_URL: localhost
+    STORAGE_ACCESS_KEY: minioadmin
+    STORAGE_SECRET_KEY: minioadmin
+    VAULT_ADDR: http://localhost:8200
+    VAULT_TOKEN: root
+    SMTP_HOST: localhost
+    ENVIRONMENT: development

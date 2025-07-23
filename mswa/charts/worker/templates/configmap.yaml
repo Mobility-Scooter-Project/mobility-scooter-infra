@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-{{ .Values.appName }}-config
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.appName }}
+data:
+    BROKER_URL: {{ .Values.configmap.data.BROKER_URL | quote }}
+    DATABASE_URL: {{ .Values.configmap.data.DATABASE_URL | quote }}

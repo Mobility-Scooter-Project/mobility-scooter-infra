@@ -1,0 +1,24 @@
+replicas: 1
+appName: web
+
+image:
+  name: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/web
+  tag: "latest"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "250m"
+    memory: "512Mi"
+
+ingress:
+  subdomain: mswa-web
+
+containerPort: 3000
+
+configmap:
+  data:
+    API_BASE_URL: http://localhost:3000
+    API_KEY: your-api-key

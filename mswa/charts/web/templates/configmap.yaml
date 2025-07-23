@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-{{ .Values.appName }}-config
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.appName }}
+data:
+    NODE_TLS_REJECT_UNAUTHORIZED: {{ .Values.configmap.data.NODE_TLS_REJECT_UNAUTHORIZED | quote }}
+    API_BASE_URL: {{ .Values.configmap.data.API_BASE_URL | quote }}
+    API_KEY: {{ .Values.configmap.data.API_KEY | quote }}

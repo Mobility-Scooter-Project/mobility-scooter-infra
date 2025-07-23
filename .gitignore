@@ -1,5 +1,6 @@
 *.d.ts
 *.js
+*.pem
 node_modules
 cdktf.out
 cdktf.log

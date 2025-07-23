@@ -1,0 +1,24 @@
+dependencies:
+- name: api
+  repository: ""
+  version: 0.1.0
+- name: web
+  repository: ""
+  version: 0.1.0
+- name: postgresql
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.4.11
+- name: valkey
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 3.0.4
+- name: vault
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 1.7.9
+- name: minio
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.0.10
+- name: kafka
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 32.2.3
+digest: sha256:d9ebbfc0deed4d4cdf266cbe33b1e2bf6585800a2906e928d9ff21ae8f9e72a9
+generated: "2025-05-13T16:19:00.624265012-07:00"

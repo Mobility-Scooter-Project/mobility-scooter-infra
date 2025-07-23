@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.appName }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.appName }}
+data:
+  JWT_SECRET: {{ randAlphaNum 32 | quote }}
+  BASE_URL: {{ .Values.configmap.data.BASE_URL | quote }}
+  DATABASE_URL: {{ .Values.configmap.data.DATABASE_URL | quote }}
+  KV_URL: {{ .Values.configmap.data.KV_URL | quote }}
+  BROKER_URL: {{ .Values.configmap.data.BROKER_URL | quote }}
+  STORAGE_SECRET: {{ randAlphaNum 32 | quote }}
+  STORAGE_URL: {{ .Values.configmap.data.STORAGE_URL | quote }}
+  STORAGE_PORT: {{ .Values.configmap.data.STORAGE_PORT | quote }}
+  STORAGE_ACCESS_KEY: {{ .Values.configmap.data.STORAGE_ACCESS_KEY | quote }}
+  STORAGE_SECRET_KEY: {{ .Values.configmap.data.STORAGE_SECRET_KEY | quote }}
+  VAULT_ADDR: {{ .Values.configmap.data.VAULT_ADDR | quote }}
+  VAULT_TOKEN: {{ .Values.configmap.data.VAULT_TOKEN | quote }}

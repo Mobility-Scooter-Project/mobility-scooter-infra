@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.subdomain }}.cis240470.projects.jetstream-cloud.org
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: {{ .Values.ingress.subdomain }}.cis240470.projects.jetstream-cloud.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-{{ .Values.appName}}-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - {{.Values.ingress.subdomain }}.cis240470.projects.jetstream-cloud.org
+      secretName: {{ .Release.Name }}-tls

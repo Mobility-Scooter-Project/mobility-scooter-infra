@@ -1,0 +1,82 @@
+head_sha: ""
+
+api:
+  image:
+    tag: "latest"
+  replicas: 1
+
+web:
+  image:
+    tag: "latest"
+  replicas: 1
+
+# https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  auth:
+    postgresPassword: postgres
+  postgresqlSharedPreloadLibraries: "pgcrypto"
+  primary:
+    resourcesPreset: nano
+    persistence:
+      enabled: false
+    initdb:
+      scripts:
+        create_timescaledb.sql: |
+          CREATE EXTENSION IF NOT EXISTS pgcrypto CASCADE;
+          CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+
+# https://github.com/bitnami/charts/blob/main/bitnami/valkey/values.yaml
+valkey:
+  architecture: standalone
+  auth:
+    enabled: false
+  primary:
+    resourcesPreset: nano
+    persistence: 
+      enabled: false
+
+# https://github.com/bitnami/charts/blob/main/bitnami/vault/values.yaml
+vault:
+  server:
+    args:
+      - "server"
+      - "-dev"
+      - "-dev-root-token-id=root"
+      - "-dev-listen-address=0.0.0.0:8200"
+    lifecycleHooks:
+      postStart:
+        exec:
+          command:
+            - sh
+            - -c
+            - |
+              # In dev mode Vault auto–initializes & unseals, so we can enable engines immediately:
+              vault login root
+              vault secrets enable -path=transit transit || true
+              vault write -f transit/keys/object-key || true
+    resourcesPreset: nano
+    extraVolumes:
+      - name: data
+        emptyDir: {}
+    extraVolumeMounts:
+      - name: data
+        mountPath: /bitnami/vault/data
+    persistence:
+      enabled: false
+
+minio:
+  resourcesPreset: micro
+  persistence: 
+    enabled: false
+
+# https://github.com/bitnami/charts/blob/main/bitnami/kafka/values.yaml
+kafka:
+  controller:
+    replicaCount: 1   
+    controllerOnly: false 
+    resourcesPreset: micro  
+    persistence:
+      enabled: false          # no PVCs
+
+  broker:
+    replicaCount: 0

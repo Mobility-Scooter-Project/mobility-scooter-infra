@@ -1,4 +1,6 @@
 repositories:
+  - name: external-secrets
+    url: https://charts.external-secrets.io
   - name: sealed-secrets
     url: https://bitnami-labs.github.io/sealed-secrets
   - name: cloud-provider-openstack
@@ -9,11 +11,19 @@ repositories:
     url: https://charts.jetstack.io
   - name: argo
     url: https://argoproj.github.io/argo-helm
+  - name: kargo
+    url: ghcr.io/akuity/kargo-charts
+    oci: true
 
 releases:
   - name: sealed-secrets
     chart: sealed-secrets/sealed-secrets
     namespace: kube-system
+  - name: external-secrets
+    chart: external-secrets/external-secrets
+    namespace: external-secrets
+    values:
+      - ./values/external-secrets.yaml
   - name: os-cloud-controller
     chart: cloud-provider-openstack/openstack-cloud-controller-manager
     values: 
@@ -41,13 +51,13 @@ releases:
     namespace: argocd
     values:
       - ./values/argocd.yaml
-  - name: argocd-apps
-    chart: argo/argocd-apps
-    namespace: argocd
-    values:
-      - ./values/argocd-apps.yaml
   - name: argocd-image-updater
     chart: argo/argocd-image-updater
     namespace: argocd
+  #- name: kargo
+   # chart: kargo/kargo
+    #namespace: kargo
+    #values:
+    #  - ./values/kargo.yaml
   - name: addons
     chart: "../addons"

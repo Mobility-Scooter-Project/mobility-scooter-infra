@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-run-migrations
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: apply-migrations
+        image: node:20-bookworm
+        env: 
+          - name: DATABASE_URL
+            value: 'postgresql://postgres:postgres@{{ .Release.Name }}-postgresql:5432'
+        command: ["/bin/sh", "-c"]
+        args: 
+          - |
+            echo "Waiting for database to be ready..."
+            apt-get update && apt-get install -y netcat-openbsd
+            
+            until nc -z {{ .Release.Name }}-postgresql 5432; do
+              echo "Waiting for PostgreSQL to be available..."
+              sleep 2
+            done
+            
+            echo "Cloning repo..."
+            git clone https://github.com/Mobility-Scooter-Project/mobility-scooter-web-app.git
+            cd mobility-scooter-web-app/apps/api
+            git checkout {{ .Values.head_sha}}
+            echo "Installing pnpm..."
+            npm install -g pnpm
+            echo "Installing drizzle..."
+            pnpm i
+            pnpm run db:migrate
+      restartPolicy: OnFailure
