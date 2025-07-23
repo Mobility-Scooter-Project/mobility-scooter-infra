@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mswa-dev
+  namespace: argocd
+spec:
+  destination:
+    namespace: mswa-dev
+    server: https://kubernetes.default.svc
+  source:
+    path: app
+    repoURL: https://github.com/Mobility-Scooter-Project/mobility-scooter-infa
+    targetRevision: bryan/tri-env-setup
+    helm:
+      valueFiles:
+        - values-dev.yaml
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: false
+      selfHeal: true

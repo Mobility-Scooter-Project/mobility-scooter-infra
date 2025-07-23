@@ -1,0 +1,9 @@
+api:
+  image:
+    tag: develop
+  replicas: 1
+
+web:
+  image:
+    tag: develop
+  replicas: 1
