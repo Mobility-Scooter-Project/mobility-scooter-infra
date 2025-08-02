@@ -1,0 +1,18 @@
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+
+releases:
+  - name: argocd
+    chart: argo/argo-cd
+    namespace: argocd
+  - name: cnpg
+    namespace: cnpg-system
+    chart: cnpg/cloudnative-pg
+  - name: cluster
+    chart: ./
+    namespace: cluster
+    values:
+      - ./values.local.yaml
