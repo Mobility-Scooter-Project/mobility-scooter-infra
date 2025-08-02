@@ -1,6 +1,0 @@
-redis:
-  replicas: 1
-  image:
-    tag: 8.0.3-alpine
-  service:
-    type: NodePort

@@ -1,0 +1,7 @@
+repositories:
+  - name: external-secrets
+    url: https://charts.external-secrets.io
+    
+releases:
+ - name: base
+   chart: ./
