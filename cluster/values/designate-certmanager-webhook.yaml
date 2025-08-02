@@ -1,5 +1,0 @@
-# ./charts/designate-certmanager-webhook/values.yaml
-credentialsSecret: cloud-env
-
-cert-manager:
-  namespace: cert-manager
