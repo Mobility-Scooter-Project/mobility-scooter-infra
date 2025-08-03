@@ -1,1 +1,0 @@
-kubectl create secret generic github-app-private-key --from-file ../gh-app-private-key.pem
