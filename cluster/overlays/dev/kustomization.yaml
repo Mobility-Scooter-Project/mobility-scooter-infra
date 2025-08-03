@@ -5,4 +5,8 @@ resources:
   - ../../helm
   - ../../base
 
-
+patches:
+  - path: patches/pgcluster.yaml
+    target:
+      kind: Cluster
+      name: pgcluster

@@ -5,3 +5,4 @@ resources:
   # include the bootstrap overlay to allow argocd to be patched by overlays
   - ../bootstrap
   - external-secrets
+  - cnpg/pgcluster.yaml
