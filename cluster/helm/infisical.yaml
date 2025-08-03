@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infisical
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: redpanda
+    repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts
+    targetRevision: 25.1.1
+    helm:
+      releaseName: infisical
+      values: |
+        image: 
+          respository: infisical/infisical 
+          tag: v0.144.0-postgres
+          pullPolicy: IfNotPresent
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: infisical
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
