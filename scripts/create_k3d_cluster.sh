@@ -1,5 +1,5 @@
 k3d cluster delete msp-dev || true
-k3d cluster create msp-dev --agents 1 -p "80:80@loadbalancer" -p "443:443@loadbalancer" 
+k3d cluster create msp-dev --agents 1 -p "80:80@loadbalancer" -p "443:443@loadbalancer" --image rancher/k3s:v1.30.14-k3s2-amd64
 
 kubectl apply -k cluster/bootstrap
 echo "Waiting for ArgoCD to be ready..."
