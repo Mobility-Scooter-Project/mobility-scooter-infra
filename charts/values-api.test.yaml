@@ -1,0 +1,7 @@
+image:
+  repository: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/api
+  tag: develop
+
+replicas: 1
+port: 3000
+targetPort: 3000
