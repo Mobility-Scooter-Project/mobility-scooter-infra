@@ -6,3 +6,4 @@ resources:
   - ../bootstrap
   - external-secrets
   - cnpg/pgcluster.yaml
+  - infisical/authsecret.yaml

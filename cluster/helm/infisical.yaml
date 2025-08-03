@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    chart: redpanda
-    repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts
-    targetRevision: 25.1.1
+    chart: infisical
+    repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+    targetRevision: 0.4.2
     helm:
       releaseName: infisical
       values: |
