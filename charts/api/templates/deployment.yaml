@@ -28,9 +28,13 @@ spec:
         ports:
         - containerPort: {{ .Values.service.port }}
           name: http
-        {{ if .Values.env }}
-        {{- range $key, $value := .Values.env }}
+        {{- if or .Values.env .Values.queue.enabled }}
         env:
+        {{- if .Values.queue.enabled }}
+        - name: {{ .Values.queue.connectionStringEnvVarName }}
+          value: "http://redpanda:9092"
+        {{- end }}
+        {{- range $key, $value := .Values.env }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
