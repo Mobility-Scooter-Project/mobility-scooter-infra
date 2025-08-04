@@ -4,6 +4,14 @@ metadata:
   name: pgcluster
 spec:
   instances: 1
+  bootstrap:
+    initdb:
+      owner: app
+      secret:
+        name: pgcluster-secret
+      postInitSQL:
+        - "ALTER USER app CREATEDB CREATEROLE;"
+        - "GRANT ALL PRIVILEGES ON DATABASE postgres TO app;"
 
   storage:
     size: 1Gi

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.name }}
 spec:
@@ -14,6 +15,23 @@ spec:
       labels:
         app: {{ .Values.name }}
     spec:
+    {{ if .Values.database.shouldMigrate }}
+      initContainers:
+      - name: migrate
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+        workingDir: {{ .Values.database.migrationWorkingDir }}
+        command: ["/bin/sh", "-c"]
+        args: [{{ .Values.database.migrationCommand | quote }}]
+        {{- if .Values.database.enabled }}
+        env:
+        - name: {{ .Values.database.connectionStringEnvVarName }}
+          valueFrom:
+            secretKeyRef:
+              name: pgconnectionstring-secret
+              key: connectionString
+        {{- end }}
+    {{ end }}
       containers:
       - name: {{ .Values.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -28,8 +46,15 @@ spec:
         ports:
         - containerPort: {{ .Values.service.port }}
           name: http
-        {{- if or .Values.env .Values.queue.enabled }}
+        {{- if or .Values.env .Values.database.enabled .Values.queue.enabled }}
         env:
+        {{- if .Values.database.enabled }}
+        - name: {{ .Values.database.connectionStringEnvVarName }}
+          valueFrom:
+            secretKeyRef:
+              name: pgconnectionstring-secret
+              key: connectionString
+        {{- end }}
         {{- if .Values.queue.enabled }}
         - name: {{ .Values.queue.connectionStringEnvVarName }}
           value: "http://redpanda:9092"

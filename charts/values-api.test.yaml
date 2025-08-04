@@ -6,6 +6,15 @@ replicas: 1
 port: 3000
 targetPort: 3000
 
+database:
+  enabled: true
+  name: test-db
+  shouldCreate: true
+  connectionStringEnvVarName: DATABASE_URL
+  shouldMigrate: true
+  migrationCommand: "npm run db:migrate"
+  migrationWorkingDir: /usr/src/mswa/apps/api
+
 queue:
   enabled: true
   connectionStringEnvVarName: BROKER_URL

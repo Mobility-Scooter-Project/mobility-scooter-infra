@@ -13,6 +13,15 @@ resources:
     cpu: "500m"
     memory: "512Mi"
 
+database:
+  enabled: 
+  name: db
+  shouldCreate: false
+  connectionStringEnvVarName: DATABASE_CONNECTION_STRING
+  shouldMigrate: true
+  migrationCommand: "npm run migrate"
+  migrationWorkingDir: /usr/src/apps/api
+
 queue:
   enabled: false
   connectionStringEnvVarName: QUEUE_CONNECTION_STRING

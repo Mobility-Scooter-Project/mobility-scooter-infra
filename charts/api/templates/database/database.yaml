@@ -1,0 +1,12 @@
+{{ if .Values.database.shouldCreate }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: {{ .Values.database.name }}
+  namespace: default
+spec:
+  cluster:
+    name: pgcluster
+  name: {{ .Values.database.name }}
+  owner: app
+{{ end }}
