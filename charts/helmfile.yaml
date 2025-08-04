@@ -1,6 +1,0 @@
-releases:
-  - name: test-api
-    chart: ./api
-    namespace: test-charts
-    values:
-      - ./values-api.test.yaml
