@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: {{ .Release.Name }}-deployment
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.name }}
+    app: {{ .Values.Release.Name }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app: {{ .Values.Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.Release.Name }}
     spec:
     {{ if .Values.database.shouldMigrate }}
       initContainers:
@@ -36,7 +36,7 @@ spec:
         {{- end }}
     {{ end }}
       containers:
-      - name: {{ .Values.name }}
+      - name: {{ .Values.Release.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         resources:
