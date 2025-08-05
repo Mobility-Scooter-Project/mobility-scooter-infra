@@ -5,10 +5,9 @@ image:
 replicas: 1
 
 service:
-  port: 5173
-  targetPort: 5173
+  port: 3000
+  targetPort: 3000
 
 ingress:
   enabled: true
-  subdomain: web
-  host: localhost
+  host: localhost:3000
