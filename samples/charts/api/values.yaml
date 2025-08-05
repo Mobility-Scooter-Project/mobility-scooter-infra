@@ -15,6 +15,10 @@ database:
   migrationCommand: "env && npm run db:migrate"
   migrationWorkingDir: /usr/src/mswa/apps/api
 
+kv:
+  enabled: true
+  connectionStringEnvVarName: KV_URL
+
 queue:
   enabled: true
   connectionStringEnvVarName: BROKER_URL
