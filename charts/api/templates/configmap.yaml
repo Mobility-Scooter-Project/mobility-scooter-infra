@@ -14,7 +14,7 @@ data:
   {{ .Values.kv.connectionStringEnvVarName }}: "redis://valkey-primary.valkey.svc.cluster.local:6379"
   {{- end }}
   {{- if .Values.queue.enabled }}
-  {{ .Values.queue.connectionStringEnvVarName }}: "http://redpanda:9092"
+  {{ .Values.queue.connectionStringEnvVarName }}: "http://redpanda.redpanda.svc.cluster.local:9092"
   {{- end }}
   {{- range $key, $value := .Values.env }}
   {{ $key }}: {{ $value | quote }}
