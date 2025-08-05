@@ -4,16 +4,16 @@ metadata:
   name: {{ .Release.Name }}-deployment
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.Release.Name }}
+    app: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.Release.Name }}
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.Release.Name }}
+        app: {{ .Release.Name }}
     spec:
     {{ if .Values.database.shouldMigrate }}
       initContainers:
@@ -36,7 +36,7 @@ spec:
         {{- end }}
     {{ end }}
       containers:
-      - name: {{ .Values.Release.Name }}
+      - name: {{ .Release.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         resources:
