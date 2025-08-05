@@ -11,3 +11,4 @@ service:
 ingress:
   enabled: true
   subdomain: web
+  host: localhost

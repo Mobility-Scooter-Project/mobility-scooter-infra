@@ -8,7 +8,7 @@ metadata:
     app: {{ .Values.name }}
 spec:
   rules:
-    - host: {{ .Values.ingress.subdomain }}.cis240470.projects.jetstream-cloud.org
+    - host: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
       http:
         paths:
           - path: /
