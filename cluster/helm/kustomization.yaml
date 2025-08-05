@@ -5,6 +5,7 @@ kind: Kustomization
 
 resources:
   - cert-manager.yaml
+  - clustersecret.yaml
   - external-secrets.yaml
   - secret-generator.yaml
   - infisical.yaml

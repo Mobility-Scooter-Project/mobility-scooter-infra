@@ -17,7 +17,7 @@ database:
   enabled: true
   name: db
   shouldCreate: false
-  connectionStringEnvVarName: DATABASE_CONNECTION_STRING
+  connectionStringEnvVarName: DATABASE_URL
   shouldMigrate: true
   migrationCommand: "npm run migrate"
   migrationWorkingDir: /usr/src/apps/api

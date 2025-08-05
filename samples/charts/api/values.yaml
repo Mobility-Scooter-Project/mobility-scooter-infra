@@ -12,7 +12,7 @@ database:
   shouldCreate: true
   connectionStringEnvVarName: DATABASE_URL
   shouldMigrate: true
-  migrationCommand: "npm run db:migrate"
+  migrationCommand: "env && npm run db:migrate"
   migrationWorkingDir: /usr/src/mswa/apps/api
 
 queue:
