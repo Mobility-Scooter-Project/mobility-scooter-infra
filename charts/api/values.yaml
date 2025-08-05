@@ -14,7 +14,7 @@ resources:
     memory: "512Mi"
 
 database:
-  enabled: 
+  enabled: true
   name: db
   shouldCreate: false
   connectionStringEnvVarName: DATABASE_CONNECTION_STRING

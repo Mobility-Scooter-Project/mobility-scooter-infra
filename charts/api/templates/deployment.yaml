@@ -25,11 +25,15 @@ spec:
         args: [{{ .Values.database.migrationCommand | quote }}]
         {{- if .Values.database.enabled }}
         env:
-        - name: {{ .Values.database.connectionStringEnvVarName }}
-          valueFrom:
-            secretKeyRef:
-              name: pgconnectionstring-secret
-              key: connectionString
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgcluster-secret
+                key: password
+          - name: {{ .Values.database.connectionStringEnvVarName }}
+            value: >
+              postgres://app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
+          
         {{- end }}
     {{ end }}
       containers:
@@ -49,11 +53,14 @@ spec:
         {{- if or .Values.env .Values.database.enabled .Values.queue.enabled }}
         env:
         {{- if .Values.database.enabled }}
-        - name: {{ .Values.database.connectionStringEnvVarName }}
+        - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: pgconnectionstring-secret
-              key: connectionString
+              name: pgcluster-secret
+              key: password
+        - name: {{ .Values.database.connectionStringEnvVarName }}
+          value: >
+            postgres://app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
         {{- end }}
         {{- if .Values.queue.enabled }}
         - name: {{ .Values.queue.connectionStringEnvVarName }}
