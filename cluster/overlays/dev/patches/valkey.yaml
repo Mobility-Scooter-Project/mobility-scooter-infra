@@ -5,3 +5,5 @@
       value: "1"
     - name: replica.replicaCount
       value: "1"
+    - name: auth.enabled
+      value: "false"
