@@ -10,4 +10,4 @@ service:
 
 ingress:
   enabled: true
-  host: localhost:3000
+  host: localhost
