@@ -6,4 +6,5 @@ resources:
   - ../bootstrap
   - external-secrets
   - cnpg
+  - ../helm
   - infisical/authsecret.yaml

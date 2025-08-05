@@ -8,7 +8,8 @@ resources:
   - clustersecret.yaml
   - external-secrets.yaml
   - secret-generator.yaml
-  - infisical.yaml
   - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.26/releases/cnpg-1.26.1.yaml
+  - valkey.yaml
+  - infisical.yaml
   - redpanda.yaml
   - keda.yaml

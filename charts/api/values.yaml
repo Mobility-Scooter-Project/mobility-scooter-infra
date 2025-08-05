@@ -22,6 +22,10 @@ database:
   migrationCommand: "npm run migrate"
   migrationWorkingDir: /usr/src/apps/api
 
+kv:
+  enabled: false
+  connectionStringEnvVarName: KV_CONNECTION_STRING
+
 queue:
   enabled: false
   connectionStringEnvVarName: QUEUE_CONNECTION_STRING
