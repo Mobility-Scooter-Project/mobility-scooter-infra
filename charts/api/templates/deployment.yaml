@@ -50,27 +50,7 @@ spec:
         - containerPort: {{ .Values.service.port }}
           name: http
         {{- if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
-        env:
-        {{- if .Values.database.enabled }}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: pgcluster-secret
-              key: password
-        - name: {{ .Values.database.connectionStringEnvVarName }}
-          value: >
-            postgres://app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
-        {{- end }}
-        {{- if .Values.kv.enabled }}
-        - name: {{ .Values.kv.connectionStringEnvVarName | quote }}
-          value: "http://valkey:6379"
-        {{- end }}
-        {{- if .Values.queue.enabled }}
-        - name: {{ .Values.queue.connectionStringEnvVarName }}
-          value: "http://redpanda:9092"
-        {{- end }}
-        {{- range $key, $value := .Values.env }}
-        - name: {{ $key }}
-          value: {{ $value | quote }}
-        {{- end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-config
         {{- end }}
