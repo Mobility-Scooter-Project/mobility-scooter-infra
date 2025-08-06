@@ -15,7 +15,7 @@ resources:
   gpu:
     enabled: true
     required: false
-    count: 1
+    class: mig-1g.5gb
 
 database:
   enabled: true

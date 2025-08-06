@@ -32,11 +32,11 @@ spec:
             cpu: {{ .Values.resources.limits.cpu | default "500m" }}
             memory: {{ .Values.resources.limits.memory | default "512Mi" }}
             {{- if .Values.resources.gpu.enabled }}
-            nvidia.com/gpu: {{ .Values.resources.gpu.count }}
+            nvidia.com/{{ .Values.resources.gpu.class }}
             {{- end }}
       {{ if .Values.resources.gpu.required }}
       tolerations:
-      - key: nvidia.com/gpu
+      - key: nvidia.com/{{ .Values.resources.gpu.class }}
         operator: Exists
         effect: NoSchedule
       {{ end }}
