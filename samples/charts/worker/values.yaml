@@ -15,7 +15,7 @@ resources:
   gpu:
     enabled: true
     required: false
-    count: 0.25
+    count: 1
 
 database:
   enabled: true
