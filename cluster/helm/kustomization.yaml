@@ -13,3 +13,4 @@ resources:
   - infisical.yaml
   - redpanda.yaml
   - keda.yaml
+  - nvidia-gpu.yaml

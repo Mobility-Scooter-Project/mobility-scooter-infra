@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+        {{- if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-config
+        {{- end }}
+        resources:
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+          limits:
+            cpu: {{ .Values.resources.limits.cpu | default "500m" }}
+            memory: {{ .Values.resources.limits.memory | default "512Mi" }}
+            {{- if .Values.resources.gpu.enabled }}
+            nvidia.com/gpu: {{ .Values.resources.gpu.count }}
+            {{- end }}
+      {{ if .Values.resources.gpu.required }}
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      {{ end }}
+        
