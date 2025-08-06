@@ -16,6 +16,7 @@ resources:
     enabled: true
     required: false
     class: mig-1g.5gb
+    count: 1
 
 database:
   enabled: true
