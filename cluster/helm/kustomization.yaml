@@ -5,6 +5,7 @@ kind: Kustomization
 
 resources:
   - cert-manager.yaml
+  - designate-certmanager-webhook.yaml
   - clustersecret.yaml
   - external-secrets.yaml
   - secret-generator.yaml
