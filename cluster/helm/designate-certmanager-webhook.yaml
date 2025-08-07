@@ -13,7 +13,7 @@ spec:
       ref: values
     - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
       targetRevision: bryan/revamp
-      path: cluster/helm/designate-certmanager-webhook.yaml
+      path: cluster/helm/designate-certmanager-webhook
       helm:
         valueFiles:
           - $values/cluster/helm/designate-certmanager-webhook.yaml
