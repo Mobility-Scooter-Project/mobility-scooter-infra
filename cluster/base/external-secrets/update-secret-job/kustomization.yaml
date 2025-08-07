@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: external-secrets
+
+generatorOptions:
+ disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: update-keystone-secret-script
+    files:
+      - update_keystone_secret.py
+
+resources:
+  - serviceaccount.yaml
+  - role.yaml
+  - rolebinding.yaml
+  - updatesecretjob.yaml

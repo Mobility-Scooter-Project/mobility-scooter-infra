@@ -21,3 +21,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+
+# See https://github.com/NVIDIA/k8s-device-plugin#quick-start for more details.

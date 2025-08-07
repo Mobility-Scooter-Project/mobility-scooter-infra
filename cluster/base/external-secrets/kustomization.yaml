@@ -6,9 +6,13 @@ generatorOptions:
  disableNameSuffixHash: true
 
 secretGenerator:
-  - name: github-app-private-key
-    files:
-      - gh-app-private-key.pem
+  - name: os-application-credentials
+    options:
+      labels:
+        external-secrets.io/type: webhook
+    envs:
+      - .env
 
 resources:
   - secretstore.yaml
+  - update-secret-job

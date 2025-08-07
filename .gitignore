@@ -1,1 +1,3 @@
 *.pem
+.env
+clouds*.yaml
