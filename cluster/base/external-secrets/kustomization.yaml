@@ -16,3 +16,4 @@ secretGenerator:
 resources:
   - secretstore.yaml
   - update-secret-job
+  - clustersecret.yaml

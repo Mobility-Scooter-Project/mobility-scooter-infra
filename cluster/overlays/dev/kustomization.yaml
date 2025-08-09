@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - https://raw.githubusercontent.com/istio/istio/release-1.26/samples/addons/prometheus.yaml
+  - https://raw.githubusercontent.com/istio/istio/release-1.26/samples/addons/grafana.yaml
 
 components:
   - patches

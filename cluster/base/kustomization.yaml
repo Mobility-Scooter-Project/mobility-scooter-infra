@@ -5,6 +5,7 @@ resources:
   # include the bootstrap overlay to allow argocd to be patched by overlays
   - ../bootstrap
   - external-secrets
+  - cert-manager
   - cnpg
   - ../helm
   - infisical/authsecret.yaml
