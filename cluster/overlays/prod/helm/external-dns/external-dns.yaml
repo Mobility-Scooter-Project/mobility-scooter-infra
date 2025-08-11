@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: external-dns
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    targetRevision: 1.18.0
+    helm:
+      releaseName: external-dns
+      valuesObject:
+        provider:
+          name: webhook
+          webhook:
+            image:
+              repository: ghcr.io/inovex/external-dns-openstack-webhook
+              tag: 1.1.0
+            extraVolumeMounts:
+              - name: oscloudsyaml
+                mountPath: /etc/openstack/
+            resources: {}
+        extraVolumes:
+          - name: oscloudsyaml
+            secret:
+              secretName: oscloudsyaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

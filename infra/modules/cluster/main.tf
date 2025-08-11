@@ -12,7 +12,7 @@ resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
     cluster_template_id = "e16df0b2-5cc0-480a-b64e-1489962545bd"
     master_count = 1
     node_count = 1
-    flavor = "m3.small"
+    flavor = "m3.medium"
     master_flavor = "m3.small"
     floating_ip_enabled = true
     master_lb_enabled = true
