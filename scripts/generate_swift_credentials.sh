@@ -10,8 +10,9 @@ secret=$(echo "$output" | grep "| secret" | awk '{print $4}')
 
 # Append to .env file
 echo "" >> .env
-echo "TF_VAR_AWS_ACCESS_KEY_ID=$access" >> .env
-echo "TF_VAR_AWS_SECRET_ACCESS_KEY=$secret" >> .env
+# Export is added to ensure the variables are available in the current shell session - terraform won't pick them up otherwise
+echo "export AWS_ACCESS_KEY_ID=$access" >> .env
+echo "export AWS_SECRET_ACCESS_KEY=$secret" >> .env
 
 echo "Credentials added to .env file:"
 echo "AWS_ACCESS_KEY_ID=$access"

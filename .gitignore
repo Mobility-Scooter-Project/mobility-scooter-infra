@@ -2,6 +2,9 @@
 .env
 clouds*.yaml
 *.dat
+source.sh
+*openrc.sh
+kubeconfig.*
 
 # terraform
 # Local .terraform directories

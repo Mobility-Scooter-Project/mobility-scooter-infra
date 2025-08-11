@@ -21,5 +21,9 @@ terraform {
 }
 
 provider "openstack" {
-  cloud = "clouds.yaml"
+  cloud = "openstack"
+}
+
+module "cluster" {
+  source = "./modules/cluster"
 }

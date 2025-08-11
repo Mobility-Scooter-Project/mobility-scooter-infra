@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: read-pods-and-svcs
+  namespace: devpod
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services"]
+    verbs: ["get","list","watch"]
