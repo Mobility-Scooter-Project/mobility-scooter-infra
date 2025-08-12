@@ -12,6 +12,23 @@ spec:
     helm:
       releaseName: external-dns
       valuesObject:
+        sources:
+          - service
+          - ingress
+        interval: 2m
+        triggerLoopOnEvent: true
+        logLevel: debug
+        policy: sync
+        txtOwnerId: external-dns-openstack
+        rbac:
+          create: true
+          additionalPermissions:
+            - apiGroups: ["traefik.containo.us", "traefik.io"]
+              resources:
+                ["ingressroutes", "ingressroutetcps", "ingressrouteudps"]
+              verbs: ["get", "list", "watch"]
+        serviceAccount:
+          create: true
         provider:
           name: webhook
           webhook:
@@ -21,7 +38,13 @@ spec:
             extraVolumeMounts:
               - name: oscloudsyaml
                 mountPath: /etc/openstack/
-            resources: {}
+            resources:
+              requests:
+                memory: "64Mi"
+                cpu: "50m"
+              limits:
+                memory: "128Mi"
+                cpu: "100m"
         extraVolumes:
           - name: oscloudsyaml
             secret:

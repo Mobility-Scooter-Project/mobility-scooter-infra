@@ -7,4 +7,9 @@ resources:
   # TODO: pin the version of ArgoCD
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+patches:
+  - path: patch.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cmd-params-cm
   
