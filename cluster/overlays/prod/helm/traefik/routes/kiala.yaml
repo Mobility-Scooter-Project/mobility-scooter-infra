@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kiali-ingress
+  namespace: istio-system
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: kiala.cis240470.projects.jetstream-cloud.org
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  #tls:
+  # - hosts:
+  #    - argocd.cis240470.projects.jetstream-cloud.org
+  # secretName: argocd-tls
+  rules:
+    - host: kiala.cis240470.projects.jetstream-cloud.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kiali
+                port:
+                  number: 20001
