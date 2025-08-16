@@ -5,14 +5,15 @@ metadata:
   namespace: istio-system
   annotations:
     external-dns.alpha.kubernetes.io/hostname: kiali.cis240470.projects.jetstream-cloud.org
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: oauth2-proxy-oauth-redirect@kubernetescrd
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
-  #tls:
-  # - hosts:
-  #    - argocd.cis240470.projects.jetstream-cloud.org
-  # secretName: argocd-tls
+  tls:
+   - hosts:
+      - kiali.cis240470.projects.jetstream-cloud.org
+     secretName: kiali-tls
   rules:
     - host: kiali.cis240470.projects.jetstream-cloud.org
       http:

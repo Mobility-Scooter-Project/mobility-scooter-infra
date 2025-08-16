@@ -5,7 +5,7 @@ metadata:
   namespace: oauth2-proxy
 spec:
   forwardAuth:
-    address: http://oauth.cis240470.projects.jetstream-cloud.org
+    address: https://oauth.cis240470.projects.jetstream-cloud.org
     trustForwardHeader: true
     authResponseHeaders:
       - Authorization

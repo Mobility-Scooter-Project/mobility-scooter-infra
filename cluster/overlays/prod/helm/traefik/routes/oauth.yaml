@@ -5,14 +5,16 @@ metadata:
   namespace: oauth2-proxy
   annotations:
     external-dns.alpha.kubernetes.io/hostname: oauth.cis240470.projects.jetstream-cloud.org
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: oauth2-proxy-oauth-headers@kubernetescrd
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    #cert-manager.io/acme-challenge-type: http01
 spec:
   ingressClassName: traefik
-  #tls:
-  # - hosts:
-  #    - argocd.cis240470.projects.jetstream-cloud.org
-  # secretName: argocd-tls
+  tls:
+   - hosts:
+      - oauth.cis240470.projects.jetstream-cloud.org
+     secretName: oauth-tls
   rules:
     - host: oauth.cis240470.projects.jetstream-cloud.org
       http:
