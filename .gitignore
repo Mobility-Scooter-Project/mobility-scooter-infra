@@ -5,6 +5,8 @@ clouds*.yaml
 source.sh
 *openrc.sh
 kubeconfig.*
+*.cfg
+**/oauth2-proxy/charts/
 
 # terraform
 # Local .terraform directories

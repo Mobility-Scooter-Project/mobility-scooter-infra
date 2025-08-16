@@ -6,7 +6,7 @@ from kubernetes import client, config
 # Load credentials from environment variables
 auth_url = os.environ["OS_AUTH_URL"]
 credential_id = os.environ["OS_APPLICATION_CREDENTIAL_ID"]
-secret = os.environ["OS_APPLICATION_CREDENTIAL_SECRET"]
+credential_secret = os.environ["OS_APPLICATION_CREDENTIAL_SECRET"]
 
 # Authenticate with Keystone
 resp = requests.post(
@@ -18,7 +18,7 @@ resp = requests.post(
 			"methods": ["application_credential"],
 			"application_credential": {
 				"id": credential_id,
-				"secret": secret
+				"secret": credential_secret
 			}
 		}
 	}
@@ -32,17 +32,31 @@ token = resp.headers["X-Subject-Token"]
 config.load_incluster_config()
 v1 = client.CoreV1Api()
 
-secret = client.V1Secret(
-    metadata=client.V1ObjectMeta(name="keystone-token"),
-    type="Opaque",
-    string_data={"token": token}
-)
-
 try:
-    v1.read_namespaced_secret("keystone-token", "external-secrets")
-    v1.replace_namespaced_secret("keystone-token", "external-secrets", secret)
+    # Check if secret exists first
+    v1.patch_namespaced_secret(
+        name="keystone-token",
+        namespace="external-secrets",
+        body={
+            "metadata": {
+                "annotations": {
+                    "external-secrets.io/type": "webhook"
+                }
+            },
+            "stringData": {"token": token}
+        }
+    )
 except client.exceptions.ApiException as e:
     if e.status == 404:
+        # Secret doesn't exist, create it
+        secret = client.V1Secret(
+            metadata=client.V1ObjectMeta(
+                name="keystone-token",
+                annotations={"external-secrets.io/type": "webhook"}
+            ),
+            type="Opaque",
+            string_data={"token": token}
+        )
         v1.create_namespaced_secret("external-secrets", secret)
     else:
         raise
