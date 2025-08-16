@@ -10,15 +10,13 @@ spec:
   sources:
     - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
       targetRevision: bryan/revamp
-      ref: values
-    - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
-      targetRevision: bryan/revamp
       path: cluster/helm/designate-certmanager-webhook
       helm:
-        valuesObject:
-          credentialsSecret: os-application-credentials
-          cert-manager:
-            namespace: cert-manager
+        parameters:
+          - name: cert-manager.namespace
+            value: cert-manager
+          - name: credentialsSecret
+            value: os-application-credentials
   project: default
   syncPolicy:
     automated:
