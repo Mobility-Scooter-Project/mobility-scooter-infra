@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-worker
+  namespace: argocd
+spec:
+  destination:
+    namespace: test-charts
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
+      targetRevision: bryan/revamp
+      ref: values
+    - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
+      targetRevision: bryan/revamp
+      path: charts/worker
+      helm:
+        valueFiles:
+          - $values/samples/charts/worker/values.yaml
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

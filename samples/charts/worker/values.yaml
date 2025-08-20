@@ -1,0 +1,32 @@
+name: worker
+
+replicas: 1
+image:
+  repository: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/worker
+  tag: develop
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  gpu:
+    enabled: true
+    required: false
+    class: mig-1g.5gb
+    count: 1
+
+database:
+  enabled: true
+  name: db
+  connectionStringEnvVarName: DATABASE_URL
+
+kv:
+  enabled: false
+  connectionStringEnvVarName: KV_CONNECTION_STRING
+
+queue:
+  enabled: enabled
+  connectionStringEnvVarName: BROKER_URL

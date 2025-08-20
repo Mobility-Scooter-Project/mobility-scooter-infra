@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: oauth2-proxy
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - name: oauth2-proxy-config
+    envs:
+      - .env
+
+helmCharts:
+  - name: oauth2-proxy
+    repo: https://oauth2-proxy.github.io/manifests
+    version: 7.17.1
+    releaseName: oauth2-proxy
+    valuesInline:
+      config:
+        existingSecret: oauth2-proxy-config
+        configFile: |
+          provider = "github"
+          github_org = "Mobility-Scooter-Project"
+          email_domains = ["*"]
+          redirect_url = "https://oauth.cis240470.projects.jetstream-cloud.org/oauth2/callback"
+          reverse_proxy = true
+          upstreams = ["static://202"]
+          skip_provider_button = true
+          cookie_secure = false
+          cookie_domains = [".cis240470.projects.jetstream-cloud.org"]
+
+    namespace: oauth2-proxy
+
+resources:
+  - headers.yaml
+  - redirect.yaml

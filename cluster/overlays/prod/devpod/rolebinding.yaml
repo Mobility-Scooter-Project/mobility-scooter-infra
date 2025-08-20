@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-limited-user
+  namespace: devpod
+subjects:
+  - kind: ServiceAccount
+    name: limited-user
+    namespace: devpod
+roleRef:
+  kind: Role
+  name: read-pods-and-svcs
+  apiGroup: rbac.authorization.k8s.io

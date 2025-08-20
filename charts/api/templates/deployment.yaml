@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+    {{ if .Values.database.shouldMigrate }}
+      initContainers:
+      - name: migrate
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+        workingDir: {{ .Values.database.migrationWorkingDir }}
+        command: ["/bin/sh", "-c"]
+        args: [{{ .Values.database.migrationCommand | quote }}]
+        {{- if .Values.database.enabled }}
+        env:
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgcluster-secret
+                key: password
+          - name: {{ .Values.database.connectionStringEnvVarName }}
+            value: >
+              postgres://app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
+        {{- end }}
+    {{ end }}
+      containers:
+      - name: {{ .Release.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
+        resources:
+          requests:
+            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
+          limits:
+            cpu: {{ .Values.resources.limits.cpu | default "500m" }}
+            memory: {{ .Values.resources.limits.memory | default "512Mi" }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: http
+        {{- if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-config
+        {{- end }}
