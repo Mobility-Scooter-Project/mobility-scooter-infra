@@ -1,6 +1,6 @@
 *.pem
 .env
-clouds*.yaml
+clouds.yaml
 *.dat
 source.sh
 *openrc.sh

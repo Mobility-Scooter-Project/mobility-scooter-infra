@@ -12,3 +12,4 @@ secretGenerator:
 
 resources:
   - external-dns.yaml
+  - cloudsexternalsecret.yaml
