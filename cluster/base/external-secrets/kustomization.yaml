@@ -1,9 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: external-secrets
 
 generatorOptions:
- disableNameSuffixHash: true
+  disableNameSuffixHash: true
 
 secretGenerator:
   - name: os-application-credentials
@@ -14,6 +13,8 @@ secretGenerator:
       - .env
 
 resources:
-  - secretstore.yaml
-  - update-secret-job
   - clustersecret.yaml
+  - localserviceaccount.yaml
+  - localrole.yaml
+  - localrolebinding.yaml
+  - localsecretstore.yaml

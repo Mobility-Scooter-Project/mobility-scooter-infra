@@ -8,4 +8,4 @@ resources:
   - cert-manager
   - cnpg
   - ../helm
-  - infisical/authsecret.yaml
+  - infisical

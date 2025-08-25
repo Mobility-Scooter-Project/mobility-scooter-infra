@@ -13,9 +13,27 @@ spec:
       releaseName: infisical
       values: |
         image: 
-          respository: infisical/infisical 
-          tag: v0.144.0-postgres
+          respository: infisical/infisical
+          tag: 461deef
           pullPolicy: IfNotPresent
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hostName: infisical.cis240470.projects.jetstream-cloud.org
+          nginx:
+            enabled: false
+          annotations:
+            external-dns.alpha.kubernetes.io/hostname: infisical.cis240470.projects.jetstream-cloud.org
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+          tls:
+            - secretName: infisical-tls
+              hosts:
+                - infisical.cis240470.projects.jetstream-cloud.org
+        postgres:
+          enabled: false
+        redis:
+          enabled: false
 
   destination:
     server: "https://kubernetes.default.svc"
