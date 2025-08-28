@@ -4,9 +4,18 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress
   namespace: {{ .Release.Namespace }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   labels:
     app: {{ .Release.Name }}
 spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+       - {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
+      secretName: argocd-tls
   rules:
     - host: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
       http:

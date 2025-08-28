@@ -18,6 +18,7 @@ spec:
   template:
     metadata:
         name: '{{ .repository | normalize }}'
+        namespace: argocd
     spec:
       source:
         repoURL: '{{ .url }}'
