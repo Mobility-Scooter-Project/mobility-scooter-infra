@@ -7,11 +7,6 @@ metadata:
     app: {{ .Release.Name }}
 data:
   {{- if .Values.database.enabled }}
-    DB_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: pgcluster-secret
-          key: password
   {{ .Values.database.connectionStringEnvVarName }}: >
     postgres://app:${DB_PASSWORD}@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
   {{- end }}

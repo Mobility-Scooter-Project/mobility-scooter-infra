@@ -50,6 +50,12 @@ spec:
         - containerPort: {{ .Values.service.port }}
           name: http
         {{ if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
+        env:
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgcluster-secret
+                key: password
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-config
