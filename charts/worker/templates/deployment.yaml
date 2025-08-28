@@ -35,4 +35,15 @@ spec:
       nodeSelector:
         nvidia.com/gpu.deploy.operands: "true"
       {{- end }}
+      {{ if .Values.database.enabled }}
+        env:
+          - name: {{ .Values.database.connectionStringEnvVarName }}
+            valueFrom:
+              secretKeyRef:
+                name: pgcluster-connection-string
+                key: DATABASE_URL
+        {{ end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-config
         
