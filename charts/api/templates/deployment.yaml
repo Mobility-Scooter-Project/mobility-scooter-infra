@@ -15,7 +15,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
-    {{ if .Values.database.shouldMigrate }}
+      {{ if .Values.database.shouldMigrate }}
       initContainers:
       - name: migrate
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -23,7 +23,7 @@ spec:
         workingDir: {{ .Values.database.migrationWorkingDir }}
         command: ["/bin/sh", "-c"]
         args: [{{ .Values.database.migrationCommand | quote }}]
-        {{- if .Values.database.enabled }}
+        {{ if .Values.database.enabled }}
         env:
           - name: DB_PASSWORD
             valueFrom:
@@ -32,9 +32,9 @@ spec:
                 key: password
           - name: {{ .Values.database.connectionStringEnvVarName }}
             value: >
-              postgres://app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
-        {{- end }}
-    {{ end }}
+              app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
+        {{ end }}
+      {{ end }}
       containers:
       - name: {{ .Release.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -49,8 +49,8 @@ spec:
         ports:
         - containerPort: {{ .Values.service.port }}
           name: http
-        {{- if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
+        {{ if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-config
-        {{- end }}
+        {{ end }}
