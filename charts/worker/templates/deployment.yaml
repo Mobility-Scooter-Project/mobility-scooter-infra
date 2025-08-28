@@ -35,5 +35,4 @@ spec:
       nodeSelector:
         nvidia.com/gpu.deploy.operands: "true"
       {{- end }}
-      {{ end }}
         

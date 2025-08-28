@@ -12,6 +12,7 @@ spec:
         allBranches: true
         appSecretName: argocd-gh
       filters:
+        - branchMatch: "bryan/video-worker-chart"
         - repositoryMatch: .*
           pathsExist: [deploy]
   goTemplate: true
