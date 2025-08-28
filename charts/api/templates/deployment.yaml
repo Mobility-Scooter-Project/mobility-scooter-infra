@@ -25,14 +25,11 @@ spec:
         args: [{{ .Values.database.migrationCommand | quote }}]
         {{ if .Values.database.enabled }}
         env:
-          - name: DB_PASSWORD
+          - name: {{ .Values.database.connectionStringEnvVarName }}
             valueFrom:
               secretKeyRef:
-                name: pgcluster-secret
-                key: password
-          - name: {{ .Values.database.connectionStringEnvVarName }}
-            value: >
-              app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432
+                name: pgcluster-connection-string
+                key: DATABASE_URL
         {{ end }}
       {{ end }}
       containers:
@@ -51,11 +48,11 @@ spec:
           name: http
         {{ if or .Values.env .Values.database.enabled .Values.kv.enabled .Values.queue.enabled }}
         env:
-          - name: DB_PASSWORD
+          - name: {{ .Values.database.connectionStringEnvVarName }}
             valueFrom:
               secretKeyRef:
-                name: pgcluster-secret
-                key: password
+                name: pgcluster-connection-string
+                key: DATABASE_URL
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-config
