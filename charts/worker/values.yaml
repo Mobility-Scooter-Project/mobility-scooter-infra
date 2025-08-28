@@ -14,9 +14,6 @@ resources:
     memory: "512Mi"
   gpu:
     enabled: false
-    required: false
-    class: mig-1g.5gb
-    count: 1
 
 database:
   enabled: false

@@ -31,13 +31,9 @@ spec:
           limits:
             cpu: {{ .Values.resources.limits.cpu | default "500m" }}
             memory: {{ .Values.resources.limits.memory | default "512Mi" }}
-            {{- if .Values.resources.gpu.required }}
-            nvidia.com/{{ .Values.resources.gpu.class }}: {{ .Values.resources.gpu.count | default "1" }}
-            {{- end }}
-      {{ if .Values.resources.gpu.required }}
-      tolerations:
-      - key: nvidia.com/{{ .Values.resources.gpu.class }}
-        operator: Exists
-        effect: NoSchedule
+      {{ if .Values.resources.gpu.enabled }}
+      nodeSelector:
+        nvidia.com/gpu.deploy.operands: "true"
+      {{- end }}
       {{ end }}
         
