@@ -13,6 +13,10 @@ resources:
     cpu: "500m"
     memory: "512Mi"
 
+ingress:
+  enabled: false
+  subdomain: api
+
 database:
   enabled: false
   name: db
