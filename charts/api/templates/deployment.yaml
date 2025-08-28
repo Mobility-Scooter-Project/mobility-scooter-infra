@@ -32,7 +32,7 @@ spec:
                 key: password
           - name: {{ .Values.database.connectionStringEnvVarName }}
             value: >
-              app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432/{{ .Values.database.name }}
+              app:$(DB_PASSWORD)@pgcluster-rw.default.svc.cluster.local:5432
         {{ end }}
       {{ end }}
       containers:
