@@ -1,4 +1,4 @@
-name: api
+name: worker
 
 replicas: 1
 image:
