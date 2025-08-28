@@ -15,7 +15,7 @@ spec:
   tls:
     - hosts:
        - {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
-      secretName: argocd-tls
+      secretName: {{ .Release.Name }}-tls
   rules:
     - host: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
       http:
