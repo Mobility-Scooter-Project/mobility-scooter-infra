@@ -24,15 +24,16 @@ resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
   }
 }
 
-resource "openstack_containerinfra_nodegroup_v1" "gpu_nodegroup" {
-  name       = "gpu-nodegroup"
-  cluster_id = openstack_containerinfra_cluster_v1.msp_cluster_prod.id
-  node_count = 1
-  flavor_id     = "g3.medium"
-  image_id   = "74846576-bb7e-4ca9-897e-8f33e8fd84d1"
+# commented out for now to save SU as they are a separate pool from regular vCPU and RAM
+#resource "openstack_containerinfra_nodegroup_v1" "gpu_nodegroup" {
+  #name       = "gpu-nodegroup"
+  #cluster_id = openstack_containerinfra_cluster_v1.msp_cluster_prod.id
+  #node_count = 1
+  #flavor_id     = "g3.medium"
+  #image_id   = "74846576-bb7e-4ca9-897e-8f33e8fd84d1"
   # NOTE: this did not actually end up working, so I manually set the volume size in the OpenStack dashboard to 100GB
-  docker_volume_size = 100
-  labels    = {
-    boot_volume_size = "60"
-  }
-}
+  #docker_volume_size = 100
+  #labels    = {
+    #boot_volume_size = "60"
+  #}
+#}
