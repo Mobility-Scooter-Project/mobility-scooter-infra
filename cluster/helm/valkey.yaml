@@ -11,6 +11,9 @@ spec:
     targetRevision: 3.0.22
     helm:
       releaseName: valkey
+      parameters:
+        - name: auth.enabled
+          value: "false"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: valkey

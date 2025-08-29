@@ -5,3 +5,5 @@ resources:
 - secret.yaml
 - clustersecret.yaml
 - pgcluster.yaml
+- connectionstringsecret.yaml
+- connectionstringclustersecret.yaml

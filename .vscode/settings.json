@@ -7,6 +7,9 @@
     "Secgroup"
   ],
   "yaml.schemas": {
-    "https://www.schemastore.org/yamllint.json": "file:///home/bryan/projects/cpp/msp/mobility-scooter-infra/charts/api/templates/configmap.yaml"
+    "https://www.schemastore.org/yamllint.json": [
+      "file:///home/bryan/projects/cpp/msp/mobility-scooter-infra/charts/api/templates/configmap.yaml",
+      "file:///home/bryan/projects/cpp/msp/mobility-scooter-infra/charts/api/templates/ingress.yaml"
+    ]
   },
 }

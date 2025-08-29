@@ -1,12 +1,12 @@
 replicaCount: 1
 
 certManager:
-  namespace: ~
+  namespace: cert-manager
   serviceAccountName: cert-manager
 
 image:
   repository: syseleven/designate-certmanager-webhook
-  tag: 0.2.18
+  tag: latest
   pullPolicy: IfNotPresent
 
 alpine:

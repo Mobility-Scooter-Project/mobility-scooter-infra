@@ -31,13 +31,19 @@ spec:
           limits:
             cpu: {{ .Values.resources.limits.cpu | default "500m" }}
             memory: {{ .Values.resources.limits.memory | default "512Mi" }}
-            {{- if .Values.resources.gpu.required }}
-            nvidia.com/{{ .Values.resources.gpu.class }}: {{ .Values.resources.gpu.count | default "1" }}
-            {{- end }}
-      {{ if .Values.resources.gpu.required }}
-      tolerations:
-      - key: nvidia.com/{{ .Values.resources.gpu.class }}
-        operator: Exists
-        effect: NoSchedule
-      {{ end }}
+      {{ if .Values.resources.gpu.enabled }}
+      nodeSelector:
+        nvidia.com/gpu.deploy.operands: "true"
+      {{- end }}
+      {{ if .Values.database.enabled }}
+        env:
+          - name: {{ .Values.database.connectionStringEnvVarName }}
+            valueFrom:
+              secretKeyRef:
+                name: pgcluster-connection-string
+                key: DATABASE_URL
+        {{ end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-config
         

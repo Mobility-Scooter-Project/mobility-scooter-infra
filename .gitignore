@@ -1,6 +1,7 @@
 *.pem
-.env
-clouds*.yaml
+**/.env*
+!.env.example
+clouds.yaml
 *.dat
 source.sh
 *openrc.sh

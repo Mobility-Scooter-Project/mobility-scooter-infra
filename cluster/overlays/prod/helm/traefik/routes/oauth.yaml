@@ -8,7 +8,6 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: oauth2-proxy-oauth-headers@kubernetescrd
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    #cert-manager.io/acme-challenge-type: http01
 spec:
   ingressClassName: traefik
   tls:

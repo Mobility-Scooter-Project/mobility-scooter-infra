@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   sources:
     - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
-      targetRevision: bryan/revamp
+      targetRevision: bryan/devpod
       path: cluster/helm/designate-certmanager-webhook
       helm:
         parameters:
