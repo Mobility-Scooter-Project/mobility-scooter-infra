@@ -1,0 +1,29 @@
+name: worker
+
+replicas: 1
+image:
+  repository: myrepository
+  tag: latest
+  pullPolicy: IfNotPresent
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  gpu:
+    enabled: false
+
+database:
+  enabled: false
+  name: db
+  connectionStringEnvVarName: DATABASE_URL
+
+kv:
+  enabled: false
+  connectionStringEnvVarName: KV_CONNECTION_STRING
+
+queue:
+  enabled: false
+  connectionStringEnvVarName: QUEUE_CONNECTION_STRING

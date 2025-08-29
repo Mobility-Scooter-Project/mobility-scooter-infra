@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: designate-certmanager-webhook
+  namespace: argocd
+spec:
+  destination:
+    namespace: cert-manager
+    server: 'https://kubernetes.default.svc'
+  sources:
+    - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
+      targetRevision: bryan/devpod
+      path: cluster/helm/designate-certmanager-webhook
+      helm:
+        parameters:
+          - name: cert-manager.namespace
+            value: cert-manager
+          - name: credentialsSecret
+            value: os-application-credentials
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

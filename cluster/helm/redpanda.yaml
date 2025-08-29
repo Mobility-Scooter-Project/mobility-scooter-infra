@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redpanda
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: redpanda
+    repoURL: https://charts.redpanda.com
+    targetRevision: 25.1.1
+    helm:
+      releaseName: redpanda
+      values: |
+        statefulset:
+          replicas: 1
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: redpanda
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

@@ -1,0 +1,26 @@
+image:
+  repository: ghcr.io/mobility-scooter-project/mobility-scooter-web-app/api
+  tag: develop
+
+replicas: 1
+
+service:
+  port: 3000
+  targetPort: 3000
+
+database:
+  enabled: true
+  name: test-db
+  shouldCreate: true
+  connectionStringEnvVarName: DATABASE_URL
+  shouldMigrate: true
+  migrationCommand: "env && npm run db:migrate"
+  migrationWorkingDir: /usr/src/mswa/apps/api
+
+kv:
+  enabled: true
+  connectionStringEnvVarName: KV_URL
+
+queue:
+  enabled: true
+  connectionStringEnvVarName: BROKER_URL
