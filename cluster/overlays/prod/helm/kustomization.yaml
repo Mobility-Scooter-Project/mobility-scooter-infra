@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - traefik
   - external-dns
+  - oauth2-proxy/namespace.yaml
   - oauth2-proxy

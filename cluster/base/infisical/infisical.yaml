@@ -14,7 +14,7 @@ spec:
       values: |
         image: 
           respository: infisical/infisical
-          tag: 461deef
+          tag: latest
           pullPolicy: IfNotPresent
         ingress:
           enabled: true

@@ -1,5 +1,6 @@
 *.pem
-.env
+**/.env*
+!.env.example
 clouds.yaml
 *.dat
 source.sh
