@@ -24,6 +24,7 @@ helmCharts:
     namespace: oauth2-proxy
 
 resources:
+  - namespace.yaml
   - externalsecret.yaml
   - headers.yaml
   - redirect.yaml
