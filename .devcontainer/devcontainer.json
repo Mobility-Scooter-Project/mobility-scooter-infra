@@ -1,0 +1,42 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+	"name": "MSP Infra Dev Container",
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	"features": {
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "latest",
+			"helm": "latest",
+			"minikube": "none"
+		},
+		"ghcr.io/devcontainers/features/terraform": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/python": {
+			"version": "3.12",
+			"toolsToInstall": ["virtualenv", "pipx"]
+		},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker": {},
+		"ghcr.io/jsburckhardt/devcontainer-features/k3d": {}
+	},
+	"postCreateCommand": "sh .devcontainer/install_openstack.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-containers",
+				"redhat.vscode-yaml",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"ipedrazas.kubernetes-snippets",
+				"inercia.vscode-k3d"
+			]
+		}
+	}
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "kubectl version",
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
