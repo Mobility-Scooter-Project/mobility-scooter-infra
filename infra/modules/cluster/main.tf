@@ -15,12 +15,12 @@ resource "openstack_compute_keypair_v2" "msp_keypair" {
 # https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/containerinfra_cluster_v1
 resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
   name                = "msp-cluster-prod"
-  cluster_template_id = "e16df0b2-5cc0-480a-b64e-1489962545bd"
+  cluster_template_id = var.cluster_template_id
   keypair             = openstack_compute_keypair_v2.msp_keypair.name
-  master_count        = 1
-  node_count          = 1
-  flavor              = "m3.medium"
-  master_flavor       = "m3.small"
+  master_count        = var.master_count
+  node_count          = var.node_count
+  flavor              = var.node_flavor
+  master_flavor       = var.master_flavor
   floating_ip_enabled = true
   master_lb_enabled   = true
   # https://docs.openstack.org/magnum/latest/user/#labels

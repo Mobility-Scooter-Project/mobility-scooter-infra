@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: infisical-oscloudsyaml
+  namespace: external-dns
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: infisical
+
+  target:
+    name: oscloudsyaml
+    template:
+      engineVersion: v2
+      data:
+        clouds.yaml: "{{ .OSCLOUDS }}"
+        
+  dataFrom:
+    - find:
+        name:
+          regexp: OSCLOUDS

@@ -9,8 +9,4 @@ secretGenerator:
     envs:
       - .env
 resources:
-  - authsecret.yaml
-  - infisical.yaml
-  - database-external-secret.yaml
   - secretstore.yaml
-  - ghexternalsecret.yaml
