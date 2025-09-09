@@ -14,4 +14,6 @@ spec:
         - "GRANT ALL PRIVILEGES ON DATABASE postgres TO app;"
 
   storage:
-    size: 1Gi
+    size: 400Gi
+  walStorage:
+    size: 100Gi
