@@ -9,12 +9,9 @@ spec:
       cloneProtocol: https
       github:
         organization: Mobility-Scooter-Project
-        allBranches: true
         appSecretName: argocd-gh
       filters:
-        - branchMatch: "bryan/video-worker-chart"
-        - repositoryMatch: .*
-          pathsExist: [deploy]
+        - pathsExist: [deploy]
   goTemplate: true
   template:
     metadata:
