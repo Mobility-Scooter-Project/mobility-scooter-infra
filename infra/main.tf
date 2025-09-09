@@ -5,6 +5,7 @@ terraform {
       version = "3.3.2"
     }
   }
+
   backend "s3" {
     bucket = "msp-config"
     key    = "terraform.tfstate"
@@ -24,6 +25,21 @@ provider "openstack" {
   cloud = "openstack"
 }
 
-module "cluster" {
-  source = "./modules/cluster"
+module "infisical" {
+  source        = "./modules/infisical"
+  image_id      = "91fcfdd3-16c8-4cac-aaae-d7029317c77c" # Featured-Ubuntu24
+  flavor_name     = "m3.small"
+  dns_zone_name = "cis240470.projects.jetstream-cloud.org."
+  project_id    = var.PROJECT_ID
+  subdomain     = "infisical"
 }
+
+/*module "cluster" {
+  source              = "./modules/cluster"
+  cluster_template_id = "e16df0b2-5cc0-480a-b64e-1489962545bd"
+  master_count        = 1
+  node_count          = 1
+  node_flavor         = "m3.medium"
+  master_flavor       = "m3.small"
+}
+*/
