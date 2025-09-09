@@ -14,7 +14,7 @@ spec:
       values: |
         image: 
           respository: infisical/infisical
-          tag: latest
+          tag: v0.148.1
           pullPolicy: IfNotPresent
         ingress:
           enabled: true
