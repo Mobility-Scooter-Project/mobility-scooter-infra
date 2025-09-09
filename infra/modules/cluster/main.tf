@@ -17,8 +17,8 @@ resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
   name                = "msp-cluster-prod"
   cluster_template_id = var.cluster_template_id
   keypair             = openstack_compute_keypair_v2.msp_keypair.name
-  master_count        = 1
-  node_count          = 1
+  master_count        = var.master_count
+  node_count          = var.node_count
   flavor              = var.node_flavor
   master_flavor       = var.master_flavor
   floating_ip_enabled = true

@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   # include the bootstrap overlay to allow argocd to be patched by overlays
   - ../bootstrap
+  - external-dns/namespace.yaml
   - external-secrets
   - cert-manager
   - cnpg
