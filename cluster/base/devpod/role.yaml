@@ -8,8 +8,9 @@ rules:
     resources:
       [
         "pods",
+        "nodes",
         "persistentvolumeclaims",
-        "persistentvolumes",
-        "storageclasses",
+        "serviceaccounts",
+        "secrets"
       ]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
