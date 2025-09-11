@@ -5,7 +5,7 @@ clouds.yaml
 *.dat
 source.sh
 *openrc.sh
-kubeconfig.*
+*kubeconfig.yaml
 *.cfg
 **/oauth2-proxy/charts/
 
