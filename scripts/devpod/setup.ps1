@@ -1,0 +1,2 @@
+$KUBECONFIG = Resolve-Path -Path .\kubeconfig.yaml
+devpod provider add kubernetes -o CLUSTER_ROLE=devpod-role -o INACTIVITY_TIMEOUT=30m -o KUBERNETES_CONFIG=$KUBECONFIG -o SERVICE_ACCOUNT=devpod-sa -o STORAGE_CLASS=default
