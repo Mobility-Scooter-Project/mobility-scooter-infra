@@ -55,3 +55,15 @@ resource "openstack_dns_recordset_v2" "infisical_dns" {
 
   records = [openstack_networking_floatingip_v2.infisical_fip.address]
 }
+
+resource "openstack_blockstorage_volume_v3" "infisical_volume" {
+  region      = "IU"
+  name        = "infisical-volume"
+  description = "Volume for Infisical instance"
+  size        = var.volume_size
+}
+
+resource "openstack_compute_volume_attach_v2" "infisical_volume_attach" {
+  instance_id = openstack_compute_instance_v2.infisical.id
+  volume_id   = openstack_blockstorage_volume_v3.infisical_volume.id
+}

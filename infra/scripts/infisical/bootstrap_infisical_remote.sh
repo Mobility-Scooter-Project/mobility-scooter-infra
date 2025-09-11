@@ -4,7 +4,7 @@
 sudo apt update
 
 # install k3s
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh -
+curl -sfL https://get.k3s.io | sh -
 sudo usermod -aG k3s ubuntu
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -18,8 +18,13 @@ helm repo update
 
 helm upgrade --install infisical infisical-helm-charts/infisical-standalone \
     --set infisical.image.tag=v0.148.1 \
-    --set ingress.nginx.enabled=true \
-    --set ingress.nginx.hostName=infisical.cis240470.projects.jetstream-cloud.org \
+    --set ingress.nginx.enabled=false \
+    --set ingress.ingressClassName=traefik \
+    --set ingress.hostName=infisical.cis240470.projects.jetstream-cloud.org \
+    --set ingress.annotations."cert-manager\.io/cluster-issuer"=letsencrypt-prod \
+    --set ingress.annotations."traefik\.ingress\.kubernetes\.io/router\.entrypoints"=websecure \
+    --set "ingress.tls[0].hosts[0]=infisical.cis240470.projects.jetstream-cloud.org" \
+    --set "ingress.tls[0].secretName=infisical-tls" \
     --namespace infisical \
     --create-namespace
 
