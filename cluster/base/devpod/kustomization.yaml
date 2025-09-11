@@ -6,4 +6,4 @@ resources:
   - role.yaml
   - serviceaccount.yaml
   - sa-secret.yaml
-  - clusterrolebinding.yaml
+  - rolebinding.yaml
