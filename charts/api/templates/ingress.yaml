@@ -20,7 +20,7 @@ spec:
     - host: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
       http:
         paths:
-          - path: /
+          - path: {{ .Values.ingress.prefix | default "/" }}
             pathType: Prefix
             backend:
               service:

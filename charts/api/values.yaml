@@ -16,6 +16,7 @@ resources:
 ingress:
   enabled: false
   subdomain: api
+  prefix: /
 
 database:
   enabled: false
