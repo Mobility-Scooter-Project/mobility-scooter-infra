@@ -24,3 +24,9 @@ variable "subdomain" {
   description = "The subdomain to create the DNS record for."
   type        = string
 }
+
+variable "volume_size" {
+  description = "The size of the block storage volume in GB."
+  type        = number
+  default     = 20
+}

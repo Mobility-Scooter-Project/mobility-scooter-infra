@@ -1,0 +1,91 @@
+  
+    [32m             NAME              [0m | [32mREQUIRED[0m | [32m                                DESCRIPTION                                [0m | [32mDEFAULT[0m | [32mVALUE [0m  
+  ----------------------------------+----------+-----------------------------------------------------------------------------+---------+---------
+    ARCHITECTURE                    | false    | The cpu architecture to use                                                 |         |         
+                                    |          | for the workspace pod. E.g.                                                 |         |         
+                                    |          | amd64, arm64, etc.                                                          |         |         
+    CLUSTER_ROLE                    | false    | If defined, DevPod will create                                              |         |         
+                                    |          | a role binding for the given                                                |         |         
+                                    |          | cluster role.                                                               |         |         
+    CREATE_NAMESPACE                | false    | If true, DevPod will try to                                                 | true    | true    
+                                    |          | create the namespace.                                                       |         |         
+    DISK_SIZE                       | false    | The default size for the                                                    | 10Gi    | 10Gi    
+                                    |          | persistent volume to use.                                                   |         |         
+    DOCKERLESS_DISABLED             | false    | If dockerless should be                                                     | false   | false   
+                                    |          | disabled. Dockerless is the                                                 |         |         
+                                    |          | way DevPod uses to build                                                    |         |         
+                                    |          | images directly within                                                      |         |         
+                                    |          | Kubernetes. If dockerless                                                   |         |         
+                                    |          | is disabled and no image is                                                 |         |         
+                                    |          | specified, DevPod will fail                                                 |         |         
+                                    |          | instead.                                                                    |         |         
+    DOCKERLESS_IMAGE                | false    | The dockerless image to use.                                                |         |         
+    INACTIVITY_TIMEOUT              | false    | If defined, will automatically                                              |         |         
+                                    |          | stop the pod after the                                                      |         |         
+                                    |          | inactivity period. Examples:                                                |         |         
+                                    |          | 10m, 1h                                                                     |         |         
+    KUBERNETES_CONFIG               | false    | The kubernetes                                                              |         |         
+                                    |          | config to use. E.g.                                                         |         |         
+                                    |          | /path/to/my/kube/config.yaml                                                |         |         
+    KUBERNETES_CONTEXT              | false    | The kubernetes context to use.                                              |         |         
+                                    |          | E.g. my-kube-context                                                        |         |         
+    KUBERNETES_NAMESPACE            | false    | The kubernetes namespace to                                                 | devpod  | devpod  
+                                    |          | use. Defaults to devpod.                                                    |         |         
+    KUBERNETES_PULL_SECRETS_ENABLED | false    | If true, DevPod will try to                                                 | true    | true    
+                                    |          | use the pull secrets from the                                               |         |         
+                                    |          | current context.                                                            |         |         
+    LABELS                          | false    | The labels to use for the workspace pod. E.g.                               |         |         
+                                    |          | devpod.sh/example=value,devpod.sh/example2=value2                           |         |         
+    NODE_SELECTOR                   | false    | The node selector to use                                                    |         |         
+                                    |          | for the workspace pod. E.g.                                                 |         |         
+                                    |          | my-label=value,my-label-2=value-2                                           |         |         
+    POD_MANIFEST_TEMPLATE           | false    | Pod manifest template file                                                  |         |         
+                                    |          | path used as template to                                                    |         |         
+                                    |          | build the devpod pod. E.g.                                                  |         |         
+                                    |          | /path/pod_manifest.yaml.                                                    |         |         
+                                    |          | Alternatively can be an inline                                              |         |         
+                                    |          | yaml string.                                                                |         |         
+    POD_TIMEOUT                     | false    | Determines how long the                                                     | 10m     | 10m     
+                                    |          | provider waits for the                                                      |         |         
+                                    |          | workspace pod to come up.                                                   |         |         
+                                    |          | Examples: 10m, 1h                                                           |         |         
+    PVC_ACCESS_MODE                 | false    | If defined, DevPod will use                                                 |         |         
+                                    |          | the given access mode to                                                    |         |         
+                                    |          | create the persistent volume                                                |         |         
+                                    |          | claim. You will need to ensure                                              |         |         
+                                    |          | the storage class support the                                               |         |         
+                                    |          | given access mode!. E.g. RWO                                                |         |         
+                                    |          | or ROX or RWX or RWOP                                                       |         |         
+    PVC_ANNOTATIONS                 | false    | If defined, DevPod will use                                                 |         |         
+                                    |          | add the given annotations to                                                |         |         
+                                    |          | the main workspace pvc                                                      |         |         
+    RESOURCES                       | false    | The resources to use for the workspace container. E.g.                      |         |         
+                                    |          | requests.cpu=500m,limits.memory=5Gi,limits.gpu-vendor.example/example-gpu=1 |         |         
+    SERVICE_ACCOUNT                 | false    | If defined, DevPod will use                                                 |         |         
+                                    |          | the given service account for                                               |         |         
+                                    |          | the dev container.                                                          |         |         
+    STORAGE_CLASS                   | false    | If defined, DevPod will use                                                 |         |         
+                                    |          | the given storage class to                                                  |         |         
+                                    |          | create the persistent volume                                                |         |         
+                                    |          | claim. You will need to ensure                                              |         |         
+                                    |          | the storage class exists in                                                 |         |         
+                                    |          | your cluster!                                                               |         |         
+    STRICT_SECURITY                 | false    | EXPERIMENTAL! Use at your                                                   | false   | false   
+                                    |          | own risk. Removes the                                                       |         |         
+                                    |          | default security context                                                    |         |         
+                                    |          | and merges the one from                                                     |         |         
+                                    |          | POD_MANIFEST_TEMPLATE if                                                    |         |         
+                                    |          | specified.                                                                  |         |         
+    WORKSPACE_VOLUME_MOUNT          | false    | Sets the path of the workspace                                              |         |         
+                                    |          | volume mount. By default                                                    |         |         
+                                    |          | it is the root of your                                                      |         |         
+                                    |          | workspace source code, usually                                              |         |         
+                                    |          | /workspaces/$WORKSPACE_ID.                                                  |         |         
+                                    |          | If you intend to create                                                     |         |         
+                                    |          | multi-repo workspaces                                                       |         |         
+                                    |          | or need additional files                                                    |         |         
+                                    |          | throughout the lifecycle of                                                 |         |         
+                                    |          | the workspace, set this option                                              |         |         
+                                    |          | to a parent directory of the                                                |         |         
+                                    |          | workspace mount.                                                            |         |         
+  

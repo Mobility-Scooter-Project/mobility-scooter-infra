@@ -5,6 +5,6 @@ output "infisical_private_key" {
 }
 
 output "kubeconfig" {
-    value     = module.cluster.kubeconfig
-    sensitive = true
+  value     = module.cluster.kubeconfig
+  sensitive = true
 }
