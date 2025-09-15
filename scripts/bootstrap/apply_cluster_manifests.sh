@@ -1,5 +1,8 @@
 #!/bin/bash
 START=$(date +%s)
+echo "Modifiying kubelet config..."
+kubectl patch cm -n kube-system kubelet-config --patch-file cluster/overlays/prod/kubelet-config.yaml
+
 echo "Applying bootstrap manifests..."
 kubectl apply -k cluster/bootstrap
 
