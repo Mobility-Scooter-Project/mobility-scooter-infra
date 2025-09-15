@@ -14,8 +14,6 @@ spec:
       values: |
         logging-operator-crds:
           install: true
-        testReceiver:
-          enabled: true
   destination:
     server: "https://kubernetes.default.svc"
     namespace: logging
