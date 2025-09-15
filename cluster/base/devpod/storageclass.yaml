@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: devpod
+parameters:
+  availability: nova
+  fstyope: ext4
+  type: __DEFAULT__
+provisioner: openstack.org/cinder-csi
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: true

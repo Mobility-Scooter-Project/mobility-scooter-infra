@@ -11,3 +11,4 @@ resources:
   - ../helm
   - infisical
   - argocd
+  - devpod
