@@ -7,4 +7,3 @@ resources:
   - serviceaccount.yaml
   - sa-secret.yaml
   - rolebinding.yaml
-  - storageclass.yaml
