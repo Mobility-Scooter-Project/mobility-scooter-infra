@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ghexternalsecret.yaml
   - applicationset.yaml
+  - https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
