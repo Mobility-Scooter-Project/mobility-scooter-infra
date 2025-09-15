@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: logging-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: logging
+    repoURL: oci://ghcr.io/kube-logging/helm-charts/logging-operator
+    targetRevision: 6.0.3
+    helm:
+      releaseName: logging-operator
+      values: |
+        logging-operator-crds:
+          install: true
+        testReceiver:
+          enabled: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

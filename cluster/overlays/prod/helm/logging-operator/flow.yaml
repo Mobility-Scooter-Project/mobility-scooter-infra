@@ -1,0 +1,14 @@
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: SyslogNGClusterFlow
+metadata:
+  name: swift-flow
+  namespace: logging
+spec:
+  match:
+    or:
+    - regexp:
+        value: json.kubernetes.labels.app.kubernetes.io/name
+        pattern: cluster-secret
+        type: string
+  globalOutputRefs:
+  - swift-output

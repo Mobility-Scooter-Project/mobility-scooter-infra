@@ -1,0 +1,20 @@
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: SyslogNGClusterOutput
+metadata:
+  name: swift-output
+  namespace: logging
+spec:
+  s3:
+    url: "https://js2.jetstream-cloud.org:8001"
+    bucket: "msp-cluster-prod-logs"
+    access_key:
+      valueFrom:
+        secretKeyRef:
+          name: s3-secret
+          key: awsAccessKeyID
+    secret_key:
+      valueFrom:
+        secretKeyRef:
+          name: s3-secret
+          key: awsSecretAccessKey
+    object_key: "logs/${HOSTNAME}/$YEAR/$MONTH/$DAY/$HOUR/${UUID}.log"
