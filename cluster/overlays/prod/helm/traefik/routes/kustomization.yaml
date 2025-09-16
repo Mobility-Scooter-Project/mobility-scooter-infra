@@ -5,3 +5,4 @@ resources:
   - oauth.yaml
   - argocd.yaml
   - kiala.yaml
+  - grafana.yaml

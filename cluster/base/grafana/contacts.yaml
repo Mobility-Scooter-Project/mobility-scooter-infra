@@ -1,0 +1,31 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: Discord
+      receivers:
+        - uid: eeya5slq2m5mod
+          type: discord
+          settings:
+            avatar_url: https://avatars.githubusercontent.com/u/7195757?v=4
+            message: |-
+                <@&REDACTED>
+                {{if gt (len .Alerts.Firing) 0}}
+                Alerts Firing:
+                {{template "__text_alert_list" .Alerts.Firing}}
+                {{end}}
+                {{if gt (len .Alerts.Resolved) 0}}
+                Alerts Resolved:
+                {{template "__text_alert_list" .Alerts.Resolved}}
+                {{end}}
+            title: '{{ template "discord.default.title" . }}'
+            url: REDACTED
+            use_discord_username: false
+          disableResolveMessage: false
+    - orgId: 1
+      name: email receiver
+      receivers:
+        - uid: ""
+          type: email
+          settings:
+            addresses: <example@email.com>
+          disableResolveMessage: false
