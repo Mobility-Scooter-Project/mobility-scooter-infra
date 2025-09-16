@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - oauth.yaml
   - argocd.yaml
-  - kiali.yaml
+  - kiala.yaml
