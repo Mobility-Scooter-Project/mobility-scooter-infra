@@ -4,6 +4,6 @@ metadata:
   name: replace-api-with-root
   namespace: traefik-system
 spec:
-  replacePathRegex:
-    regex: "^/api(.*)"
-    replacement: "/$1"
+  stripPrefixRegex:
+    regex:
+      - ^/api/v1/(.*)/
