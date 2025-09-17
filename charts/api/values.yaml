@@ -18,6 +18,8 @@ ingress:
   subdomain: api
   prefix: /
 
+volumes: []
+
 database:
   enabled: false
   name: db
