@@ -13,5 +13,5 @@ data:
   {{ .Values.queue.connectionStringEnvVarName }}: "http://redpanda.redpanda.svc.cluster.local:9093"
   {{- end }}
   {{- range $key, $value := .Values.env }}
-  {{ $key }}: {{ $value | quote }}
+    {{ $key }}: {{ $value | quote }}
   {{- end }}
