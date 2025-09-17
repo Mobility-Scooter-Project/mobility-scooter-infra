@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: kargo
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: ghcr.io/akuity/kargo-charts
+    chart: kargo
+    targetRevision: 1.7.5
+    helm:
+      parameters:
+        - name: api.secret.name
+          value: admin-secret
+        - name: api.host
+          value: kargo.cis240470.projects.jetstream-cloud.org
+        - name: api.tls.enabled
+          value: "false"
+        - name: api.tls.selfSignedCert
+          value: "false"
+        - name: api.tls.terminatedUpstream
+          value: "true"
+        - name: api.ingress.annotations.external-dns\.alpha\.kubernetes\.io/hostname
+          value: kargo.cis240470.projects.jetstream-cloud.org
+        - name: api.ingress.annotations.traefik\.ingress\.kubernetes\.io/router\.entrypoints
+          value: websecure
+        - name: api.ingress.annotations.cert-manager\.io/cluster-issuer
+          value: letsencrypt-prod
+        - name: api.ingress.enabled
+          value: "true"
+        - name: api.ingress.ingressClassName
+          value: traefik
+        - name: api.ingress.tls.enabled
+          value: "true"
+        - name: api.ingress.tls.selfSignedCert
+          value: "false"
+        - name: api.ingress.pathType
+          value: ImplementationSpecific
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

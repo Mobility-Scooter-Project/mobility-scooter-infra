@@ -13,3 +13,4 @@ resources:
   - valkey.yaml
   - redpanda.yaml
   - keda.yaml
+  - kargo.yaml

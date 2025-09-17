@@ -1,0 +1,23 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: "{{ .Release.Name }}-stage"
+  namespace: msp
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: "{{ .Release.Name }}-warehouse"
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          kind: ClusterPromotionTask
+          name: update-argocd-app
+        vars:
+        - name: appName
+          value: {{ .Release.Name }}
+        - name: imageRepository
+          value: {{ .Values.image.repository }}
