@@ -19,6 +19,7 @@ ingress:
   prefix: /
 
 volumes: []
+volumeMounts: []
 
 database:
   enabled: false
