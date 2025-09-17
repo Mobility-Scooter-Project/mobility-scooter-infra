@@ -3,5 +3,6 @@ kind: Kustomization
 
 resources:
   - traefik.yaml
+  - apimiddleware.yaml
   - routes
   

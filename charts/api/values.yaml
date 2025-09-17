@@ -17,6 +17,7 @@ ingress:
   enabled: false
   subdomain: api
   prefix: /
+  useRootPath: false
 
 volumes: []
 volumeMounts: []

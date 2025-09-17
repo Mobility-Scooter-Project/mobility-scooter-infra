@@ -1,0 +1,9 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: replace-api-with-root
+  namespace: traefik-system
+spec:
+  replacePathRegex:
+    regex: "^/api(.*)"
+    replacement: "/$1"
