@@ -12,3 +12,4 @@ resources:
   - infisical
   - argocd
   - devpod
+  - rbac
