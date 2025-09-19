@@ -8,6 +8,9 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host | default (printf "%s.cis240470.projects.jetstream-cloud.org" .Values.ingress.subdomain) }}
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    {{ if .Values.ingress.useRootPath }}
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-system-replace-api-with-root@kubernetescrd
+    {{ end}}
   labels:
     app: {{ .Release.Name }}
 spec:

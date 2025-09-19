@@ -9,10 +9,10 @@ spec:
     server: 'https://kubernetes.default.svc'
   sources:
     - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
-      targetRevision: bryan/revamp
+      targetRevision: main
       ref: values
     - repoURL: 'https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git'
-      targetRevision: bryan/revamp
+      targetRevision: main
       path: charts/worker
       helm:
         valueFiles:

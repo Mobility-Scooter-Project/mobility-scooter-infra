@@ -27,7 +27,6 @@ resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
   merge_labels = true
   labels = {
     influx_grafana_dashboard_enabled = "true"
-    boot_volume_size                 = "60"
     cloud_provider_enabled           = "true"
   }
 }

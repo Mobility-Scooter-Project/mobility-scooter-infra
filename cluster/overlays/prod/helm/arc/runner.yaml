@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: arc-runners
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: gha-runner-scale-set
+    repoURL: ghcr.io/actions/actions-runner-controller-charts
+    targetRevision: 0.10.1
+    helm:
+      releaseName: arc-runner-set
+      values: |
+        githubConfigUrl: https://github.com/Mobility-Scooter-Project
+        githubConfigSecret: arc-gh
+        controllerServiceAccount:
+          name: arc-gha-rs-controller
+          namespace: arc-systems
+        runnerServiceAccount:
+          name: arc-runner-sa
+        minRunners: 1
+        maxRunners: 3
+        scaleSetName: arc-runner-set
+        template:
+          spec:
+            serviceAccountName: arc-runner-sa
+            containers:
+            - name: runner
+              image: ghcr.io/actions/actions-runner:latest
+              command: ["/home/runner/run.sh"]
+              env:
+                - name: ACTIONS_RUNNER_CONTAINER_HOOKS
+                  value: /home/runner/k8s/index.js
+                - name: ACTIONS_RUNNER_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+                  value: "true"
+              volumeMounts:
+                - name: work
+                  mountPath: /home/runner/_work
+              resources:
+                requests:
+                  cpu: "2000m"
+                  memory: "4Gi"
+                limits:
+                  cpu: "4000m"
+                  memory: "8Gi"
+            securityContext:
+              fsGroup: 123
+            volumes:
+              - name: work
+                ephemeral:
+                  volumeClaimTemplate:
+                    spec:
+                      accessModes: [ "ReadWriteOnce" ]
+                      storageClassName: runner
+                      resources:
+                        requests:
+                          storage: 15Gi
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: arc-runners
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

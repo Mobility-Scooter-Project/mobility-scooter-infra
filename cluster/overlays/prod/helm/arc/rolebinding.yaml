@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: arc-runner-rolebinding
+  namespace: arc-runners
+subjects:
+  - kind: ServiceAccount
+    name: arc-runner-sa
+    namespace: arc-runners
+  - kind: ServiceAccount
+    name: default
+    namespace: arc-runners
+roleRef:
+  kind: Role
+  name: arc-runner-role
+  apiGroup: rbac.authorization.k8s.io

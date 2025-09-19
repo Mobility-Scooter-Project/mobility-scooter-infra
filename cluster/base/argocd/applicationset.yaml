@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: msp-applications
+  name: msp-apps
   namespace: argocd
 spec:
   generators:
@@ -20,7 +20,7 @@ spec:
     spec:
       source:
         repoURL: '{{ .url }}'
-        targetRevision: '{{ .branch }}'
+        targetRevision: 'main'
         path: deploy
       project: default
       destination:

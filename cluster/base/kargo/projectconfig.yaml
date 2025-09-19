@@ -1,0 +1,10 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: msp
+  namespace: msp
+spec:
+  promotionPolicies:
+  - stageSelector:
+      name: "regex:.*-deploy"
+    autoPromotionEnabled: true

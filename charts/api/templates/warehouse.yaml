@@ -1,0 +1,11 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: "{{ .Release.Name }}-warehouse"
+  namespace: msp
+spec:
+  subscriptions:
+  - image:
+      repoURL:  {{ .Values.image.repository }}
+      imageSelectionStrategy: Digest
+      constraint: latest

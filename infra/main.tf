@@ -38,5 +38,6 @@ module "cluster" {
   source              = "./modules/cluster"
   cluster_template_id = "ff32fc8d-23de-417f-b6cc-5f03f2aa6628"
   node_flavor         = "m3.medium"
+  node_count          = 2
   master_flavor       = "m3.small"
 }

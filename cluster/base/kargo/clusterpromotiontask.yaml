@@ -1,0 +1,21 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ClusterPromotionTask
+metadata:
+  name: update-argocd-app
+spec:
+  vars:
+    - name: repoUrl
+      value: https://github.com/Mobility-Scooter-Project/mobility-scooter-infra.git
+    - name: appName
+    - name: imageRepository
+  steps:
+    - uses: argocd-update
+      config:
+        apps:
+          - name: ${{ vars.appName }}
+            sources:
+              - repoURL: ${{ vars.repoUrl }}
+                helm:
+                  images:
+                    - key: image.tag
+                      value: ${{ imageFrom(vars.imageRepository, warehouse(ctx.targetFreight.origin.name)).Tag }}

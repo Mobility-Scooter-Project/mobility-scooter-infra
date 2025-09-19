@@ -8,3 +8,9 @@ output "kubeconfig" {
   value     = module.cluster.kubeconfig
   sensitive = true
 }
+
+output "cluster_keypair" {
+  description = "The cluster keypair"
+  value       = module.cluster.cluster_keypair
+  sensitive   = true
+}

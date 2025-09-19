@@ -32,4 +32,4 @@ helm upgrade --install infisical infisical-helm-charts/infisical-standalone \
 kubectl create secret generic infisical-secrets -n infisical \
     --from-literal=AUTH_SECRET=$(openssl rand -base64 32) \
     --from-literal=ENCRYPTION_KEY=$(openssl rand -hex 16) \
-    --from-literal=SITE_URL="http://infisical.cis240470.projects.jetstream-cloud.org"
+    --from-literal=SITE_URL="https://infisical.cis240470.projects.jetstream-cloud.org"

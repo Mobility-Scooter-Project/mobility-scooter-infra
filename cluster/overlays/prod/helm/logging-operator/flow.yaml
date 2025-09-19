@@ -1,0 +1,10 @@
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterFlow
+metadata:
+  name: swift-flow
+  namespace: logging
+spec:
+  match:
+  - select: {}
+  globalOutputRefs:
+  - swift-output

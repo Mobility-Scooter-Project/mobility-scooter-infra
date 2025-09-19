@@ -1,0 +1,76 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: revocable-admin-role
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+rules:
+  # Full access to all resources in core API group
+  - apiGroups: [""]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in apps API group
+  - apiGroups: ["apps"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in extensions API group
+  - apiGroups: ["extensions"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in networking API group
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in storage API group
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in batch API group
+  - apiGroups: ["batch"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in autoscaling API group
+  - apiGroups: ["autoscaling"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to all resources in policy API group
+  - apiGroups: ["policy"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to RBAC resources (with some restrictions for security)
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  # Full access to metrics
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to custom resources
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to admission registration
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Full access to coordination resources
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["*"]
+    verbs: ["*"]
+
+  # Access to all other API groups (wildcard for extensibility)
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]

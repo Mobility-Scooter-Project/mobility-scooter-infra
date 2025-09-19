@@ -1,5 +1,8 @@
 #!/bin/bash
 START=$(date +%s)
+echo "Modifiying kubelet config..."
+kubectl patch cm -n kube-system kubelet-config --patch-file cluster/overlays/prod/kubelet-config.yaml
+
 echo "Applying bootstrap manifests..."
 kubectl apply -k cluster/bootstrap
 
@@ -18,5 +21,14 @@ kubectl kustomize cluster/overlays/prod --enable-helm | kubectl apply -f - --ser
 
 echo "Waiting for traefik to be ready..."
 kubectl wait --for=condition=available deployment -n traefik-system --all
+
+echo "Editing kube-prometheus-stack config..."
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 77.7.0 --namespace monitoring-system
+
+echo "Patching Grafana ConfigMap to enable feature toggles..."
+kubectl patch configmap kube-prometheus-stack-grafana -n monitoring-system --type merge --patch-file scripts/bootstrap/grafanacm.yaml
+
+echo "Restarting Grafana deployment to apply changes..."
+kubectl rollout restart deployment kube-prometheus-stack-grafana -n monitoring-system
 
 echo "Finished applying manifests after $(( $(date +%s) - $START )) seconds."

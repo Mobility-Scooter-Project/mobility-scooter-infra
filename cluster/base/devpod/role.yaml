@@ -6,11 +6,26 @@ metadata:
 rules:
   - apiGroups: [""]
     resources:
-      [
-        "pods",
-        "nodes",
-        "persistentvolumeclaims",
-        "serviceaccounts",
-        "secrets"
-      ]
+      - "pods"
+      - "pods/log"
+      - "pods/exec" 
+      - "pods/attach"
+      - "persistentvolumeclaims"
+      - "persistentvolumes"
+      - "serviceaccounts"
+      - "secrets"
+      - "configmaps"
+      - "services"
+      - "endpoints"
+      - "events"
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources:
+      - "deployments"
+      - "replicasets"
+      - "statefulsets"
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - "networkpolicies"
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
