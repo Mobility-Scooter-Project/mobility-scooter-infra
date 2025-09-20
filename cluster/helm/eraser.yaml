@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eraser
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: eraser
+    repoURL: https://eraser-dev.github.io/eraser/charts
+    targetRevision: 1.5.0-beta.0
+    helm:
+      releaseName: eraser
+      parameters:
+        - name: runtimeConfig.manager.scheduling.repeatInterval
+          value: "1h"
+        - name: runtimeConfig.manager.scanner.enabled
+          value: "false"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: eraser-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
