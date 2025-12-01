@@ -7,5 +7,5 @@ spec:
   subscriptions:
   - image:
       repoURL:  {{ .Values.image.repository }}
-      imageSelectionStrategy: NewestBuild
-      allowTags: ^develop
+      imageSelectionStrategy: Digest
+      constraint: develop
