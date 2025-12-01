@@ -7,5 +7,5 @@ spec:
   subscriptions:
   - image:
       repoURL:  {{ .Values.image.repository }}
-      imageSelectionStrategy: Digest
-      constraint: develop
+      imageSelectionStrategy: Lexical
+      allowTags: ^develop
