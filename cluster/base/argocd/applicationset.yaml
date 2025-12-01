@@ -11,7 +11,9 @@ spec:
         organization: Mobility-Scooter-Project
         appSecretName: argocd-gh
       filters:
-        - pathsExist: [deploy]
+        - branchMatch: main #^sarina-development$
+          pathsExist:
+          - deploy
   goTemplate: true
   template:
     metadata:
@@ -20,7 +22,7 @@ spec:
     spec:
       source:
         repoURL: '{{ .url }}'
-        targetRevision: 'main'
+        targetRevision: '{{ .branch }}'
         path: deploy
       project: default
       destination:
