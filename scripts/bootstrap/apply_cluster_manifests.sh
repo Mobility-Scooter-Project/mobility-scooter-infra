@@ -4,7 +4,7 @@ echo "Modifiying kubelet config..."
 kubectl patch cm -n kube-system kubelet-config --patch-file cluster/overlays/prod/kubelet-config.yaml
 
 echo "Applying bootstrap manifests..."
-kubectl apply -k cluster/bootstrap
+kubectl apply -k cluster/bootstrap --server-side --force-conflicts
 
 echo "Waiting for ArgoCD to be ready..."
 kubectl wait --for=condition=available deployment/argocd-server -n argocd
@@ -14,7 +14,7 @@ kubectl apply -k cluster/helm --server-side
 
 echo "Waiting for helm charts to be ready..."
 kubectl wait --for=condition=available deployment -n external-secrets --all
-kubectl wait --for=condition=available deployment -n infisical  --all
+# kubectl wait --for=condition=available deployment -n infisical  --all
 
 echo "Applying prod overlay..."
 kubectl kustomize cluster/overlays/prod --enable-helm | kubectl apply -f - --server-side --force-conflicts
@@ -23,7 +23,13 @@ echo "Waiting for traefik to be ready..."
 kubectl wait --for=condition=available deployment -n traefik-system --all
 
 echo "Editing kube-prometheus-stack config..."
-helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 77.7.0 --namespace monitoring-system
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+  --version 77.7.0 \
+  --namespace monitoring-system \
+  --create-namespace
 
 echo "Patching Grafana ConfigMap to enable feature toggles..."
 kubectl patch configmap kube-prometheus-stack-grafana -n monitoring-system --type merge --patch-file scripts/bootstrap/grafanacm.yaml

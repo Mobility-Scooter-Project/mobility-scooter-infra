@@ -2,45 +2,62 @@ terraform {
   required_providers {
     openstack = {
       source  = "terraform-provider-openstack/openstack"
-      version = "3.3.2"
+      version = "3.4.0"
     }
   }
 }
 
 # https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/compute_keypair_v2
+# set to "resource" not "data" so that private keypair can be returned
 resource "openstack_compute_keypair_v2" "msp_keypair" {
   name = "msp-keypair"
 }
+
 
 # https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/containerinfra_cluster_v1
 resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
   name                = "msp-cluster-prod"
   cluster_template_id = var.cluster_template_id
   keypair             = openstack_compute_keypair_v2.msp_keypair.name
+  
   master_count        = var.master_count
   node_count          = var.node_count
   flavor              = var.node_flavor
   master_flavor       = var.master_flavor
+
   floating_ip_enabled = true
   master_lb_enabled   = true
+ 
+  # throws error if configuration takes longer than create_timeout minutes
+  create_timeout      = 40
+
   # https://docs.openstack.org/magnum/latest/user/#labels
   merge_labels = true
   labels = {
-    influx_grafana_dashboard_enabled = "true"
+    monitoring_enabled               = "false"
+    influx_grafana_dashboard_enabled = "false"
+    cinder_csi_enabled               = "true"
     cloud_provider_enabled           = "true"
+    kube_tag                         = "v1.30.4"
   }
 }
 
+
+
+
 # commented out for now to save SU as they are a separate pool from regular vCPU and RAM
-#resource "openstack_containerinfra_nodegroup_v1" "gpu_nodegroup" {
-#name       = "gpu-nodegroup"
-#cluster_id = openstack_containerinfra_cluster_v1.msp_cluster_prod.id
-#node_count = 1
-#flavor_id     = "g3.medium"
-#image_id   = "74846576-bb7e-4ca9-897e-8f33e8fd84d1"
-# NOTE: this did not actually end up working, so I manually set the volume size in the OpenStack dashboard to 100GB
-#docker_volume_size = 100
-#labels    = {
-#boot_volume_size = "60"
-#}
-#}
+/*
+resource "openstack_containerinfra_nodegroup_v1" "gpu_nodegroup" {
+  name       = "gpu-nodegroup"
+  cluster_id = openstack_containerinfra_cluster_v1.msp_cluster_prod.id
+  node_count = 1
+  flavor_id     = "g3.medium"
+  image_id   = "74846576-bb7e-4ca9-897e-8f33e8fd84d1"
+  
+  # NOTE: this did not actually end up working, so I manually set the volume size in the OpenStack dashboard to 100GB
+  docker_volume_size = 100
+  labels    = {
+    boot_volume_size = "60"
+  }
+}
+*/

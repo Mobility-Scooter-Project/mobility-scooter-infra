@@ -9,7 +9,7 @@ resources:
   - cert-manager
   - cnpg
   - ../helm
-  - infisical
+  # - infisical
   - argocd
   - devpod
   - rbac

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     openstack = {
       source  = "terraform-provider-openstack/openstack"
-      version = "3.3.2"
+      version = "3.4.0"
     }
   }
 
@@ -25,6 +25,7 @@ provider "openstack" {
   cloud = "openstack"
 }
 
+/*
 module "infisical" {
   source        = "./modules/infisical"
   image_id      = "91fcfdd3-16c8-4cac-aaae-d7029317c77c" # Featured-Ubuntu24
@@ -33,11 +34,14 @@ module "infisical" {
   project_id    = var.PROJECT_ID
   subdomain     = "infisical"
 }
+*/
 
+# EVIL ASS CLUSTER
+# cluster template is defined in ./modules/cluster
 module "cluster" {
   source              = "./modules/cluster"
-  cluster_template_id = "ff32fc8d-23de-417f-b6cc-5f03f2aa6628"
+  cluster_template_id = "2d56f33a-713c-488a-b65f-47b625d832cd"
+  master_flavor       = "m3.small"
   node_flavor         = "m3.medium"
   node_count          = 2
-  master_flavor       = "m3.small"
 }

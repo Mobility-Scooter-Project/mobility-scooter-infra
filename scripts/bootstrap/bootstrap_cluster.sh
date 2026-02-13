@@ -3,9 +3,9 @@ START=$(date +%s)
 echo "Bootstrapping cluster..."
 . ./.env
 
-sh scripts/bootstrap/apply_terraform.sh
+# sh scripts/bootstrap/apply_terraform.sh
 
-sh scripts/bootstrap/get_kubeconfig.sh
+# sh scripts/bootstrap/get_kubeconfig.sh
 export KUBECONFIG=kubeconfig.yaml
 
 # run it twice, once to download CRDs, second time to apply everything else

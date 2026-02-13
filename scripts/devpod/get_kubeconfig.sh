@@ -1,4 +1,4 @@
-#!/bin/bash
+#!bin/bash
 
 # ==> MODIFY THESE TWO VARIABLES
 SERVICE_ACCOUNT_NAME="devpod-sa"
