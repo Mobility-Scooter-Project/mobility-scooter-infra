@@ -25,3 +25,4 @@ crash.*.log
 *.tfvars
 *.tfvars.json
 .devpod-internal/
+.codex
