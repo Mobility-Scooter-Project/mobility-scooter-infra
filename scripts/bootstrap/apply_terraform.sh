@@ -1,6 +1,6 @@
-#!bin/bash
-START=$(date +%s)
-echo "Running Terraform..."
-. ./.env
-cd infra && terraform apply -auto-approve
-echo "Terraform applied successfully after $(( $(date +%s) - $START )) seconds."
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "${SCRIPT_DIR}/provision_cluster.sh" "$@"

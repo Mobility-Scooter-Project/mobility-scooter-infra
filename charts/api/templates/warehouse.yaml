@@ -1,11 +1,13 @@
+{{- if .Values.delivery.kargo.enabled }}
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: "{{ .Release.Name }}-warehouse"
-  namespace: msp
+  namespace: {{ .Values.delivery.kargo.namespace | default "msp" }}
 spec:
   subscriptions:
   - image:
       repoURL:  {{ .Values.image.repository }}
       imageSelectionStrategy: Lexical
       allowTags: ^develop
+{{- end }}

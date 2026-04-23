@@ -15,7 +15,7 @@ spec:
         service:
           type: LoadBalancer
   destination:
-    server: "https://kubernetes.default.svc"
+    server: https://kubernetes.default.svc
     namespace: traefik-system
   syncPolicy:
     automated:

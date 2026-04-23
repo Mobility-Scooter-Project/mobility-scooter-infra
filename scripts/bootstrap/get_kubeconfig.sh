@@ -1,3 +1,6 @@
-#!bin/bash
-cd ./infra && terraform output kubeconfig | tail -n +2 | head -n -2 > kubeconfig.yaml
-mv kubeconfig.yaml ../kubeconfig.yaml
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "${SCRIPT_DIR}/export_kubeconfig.sh" "$@"

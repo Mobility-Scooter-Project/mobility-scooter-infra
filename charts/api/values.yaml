@@ -42,3 +42,8 @@ queue:
 service:
   port: 3000
   targetPort: 3000
+
+delivery:
+  kargo:
+    enabled: true
+    namespace: msp
