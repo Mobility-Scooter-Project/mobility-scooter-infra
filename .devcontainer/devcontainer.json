@@ -1,7 +1,12 @@
 {
     "name": "MSP Infra Dev Container",
-    "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
     "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "enableNonRootDocker": "true",
+            "moby": "true"
+        },
         "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
             "version": "latest",
             "helm": "latest",
@@ -12,7 +17,7 @@
         },
         "ghcr.io/skriptfabrik/devcontainer-features/infisical-cli:1": {}
     },
-    "postCreateCommand": "sh .devcontainer/post-create.sh",
+    "postCreateCommand": "pip install --upgrade pip && pip install python-openstackclient python-magnumclient python-heatclient python-octaviaclient",
     "customizations": {
         "vscode": {
             "extensions": [
