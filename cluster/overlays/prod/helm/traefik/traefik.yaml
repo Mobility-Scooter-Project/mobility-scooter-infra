@@ -11,9 +11,6 @@ spec:
     targetRevision: 37.0.0
     helm:
       releaseName: traefik
-      valuesObject:
-        service:
-          type: LoadBalancer
   destination:
     server: "https://kubernetes.default.svc"
     namespace: traefik-system

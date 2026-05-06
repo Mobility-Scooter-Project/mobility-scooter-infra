@@ -7,74 +7,57 @@ terraform {
   }
 }
 
-data "openstack_networking_network_v2" "external" {
-  name = var.external_network_name
+# https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/compute_keypair_v2
+# set to "resource" not "data" so that private keypair can be returned
+resource "openstack_compute_keypair_v2" "msp_keypair" {
+  name = "msp-keypair"
 }
 
-data "openstack_compute_keypair_v2" "cluster_keypair" {
-  name = var.cluster_keypair_name
-}
 
-locals {
-  template_labels = merge(
-    {
-      monitoring_enabled               = tostring(var.monitoring_enabled)
-      influx_grafana_dashboard_enabled = tostring(var.influx_grafana_dashboard_enabled)
-      cinder_csi_enabled               = tostring(var.cinder_csi_enabled)
-      cloud_provider_enabled           = tostring(var.cloud_provider_enabled)
-      auto_healing_enabled             = tostring(var.auto_healing_enabled)
-      kube_tag                         = var.kube_tag
-      availability_zone                = var.nova_availability_zone
-    },
-    var.docker_volume_type != "" ? { docker_volume_type = var.docker_volume_type } : {},
-    var.boot_volume_size > 0 ? { boot_volume_size = tostring(var.boot_volume_size) } : {},
-    var.boot_volume_type != "" ? { boot_volume_type = var.boot_volume_type } : {},
-    var.etcd_volume_size > 0 ? { etcd_volume_size = tostring(var.etcd_volume_size) } : {},
-    var.etcd_volume_type != "" ? { etcd_volume_type = var.etcd_volume_type } : {}
-  )
-}
-
-resource "openstack_containerinfra_clustertemplate_v1" "msp_cluster_template" {
-  name                  = var.cluster_template_name
-  image                 = var.cluster_image_name
-  coe                   = "kubernetes"
-  external_network_id   = data.openstack_networking_network_v2.external.id
-  dns_nameserver        = var.dns_nameserver
-  master_flavor         = var.master_flavor
-  flavor                = var.node_flavor
-  docker_volume_size    = var.docker_volume_size
-  network_driver        = var.network_driver
-  volume_driver         = var.volume_driver
-  docker_storage_driver = var.docker_storage_driver
-  floating_ip_enabled   = var.floating_ip_enabled
-  master_lb_enabled     = var.master_lb_enabled
-  labels                = local.template_labels
-}
-
+# https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/containerinfra_cluster_v1
 resource "openstack_containerinfra_cluster_v1" "msp_cluster_prod" {
-  name                = var.cluster_name
-  cluster_template_id = openstack_containerinfra_clustertemplate_v1.msp_cluster_template.id
-  keypair             = data.openstack_compute_keypair_v2.cluster_keypair.name
-  fixed_network       = var.fixed_network_name
+  name                = "msp-cluster-prod"
+  cluster_template_id = var.cluster_template_id
+  keypair             = openstack_compute_keypair_v2.msp_keypair.name
+  
+  master_count        = var.master_count
+  node_count          = var.node_count
+  flavor              = var.node_flavor
+  master_flavor       = var.master_flavor
 
-  master_count  = var.master_count
-  node_count    = var.node_count
-  flavor        = var.node_flavor
-  master_flavor = var.master_flavor
+  floating_ip_enabled = true
+  master_lb_enabled   = true
+ 
+  # throws error if configuration takes longer than create_timeout minutes
+  create_timeout      = 40
 
-  floating_ip_enabled = var.floating_ip_enabled
-  master_lb_enabled   = var.master_lb_enabled
-  create_timeout      = var.create_timeout_minutes
-
+  # https://docs.openstack.org/magnum/latest/user/#labels
   merge_labels = true
   labels = {
-    availability_zone = var.nova_availability_zone
-  }
-
-  lifecycle {
-    precondition {
-      condition     = var.nova_availability_zone == var.cinder_availability_zone
-      error_message = "Jetstream Magnum provisioning requires matching Nova and Cinder availability zones to avoid volume attach timeouts."
-    }
+    monitoring_enabled               = "false"
+    influx_grafana_dashboard_enabled = "false"
+    cinder_csi_enabled               = "true"
+    cloud_provider_enabled           = "true"
+    kube_tag                         = "v1.30.4"
   }
 }
+
+
+
+
+# commented out for now to save SU as they are a separate pool from regular vCPU and RAM
+/*
+resource "openstack_containerinfra_nodegroup_v1" "gpu_nodegroup" {
+  name       = "gpu-nodegroup"
+  cluster_id = openstack_containerinfra_cluster_v1.msp_cluster_prod.id
+  node_count = 1
+  flavor_id     = "g3.medium"
+  image_id   = "74846576-bb7e-4ca9-897e-8f33e8fd84d1"
+  
+  # NOTE: this did not actually end up working, so I manually set the volume size in the OpenStack dashboard to 100GB
+  docker_volume_size = 100
+  labels    = {
+    boot_volume_size = "60"
+  }
+}
+*/

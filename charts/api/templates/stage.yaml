@@ -1,9 +1,8 @@
-{{- if .Values.delivery.kargo.enabled }}
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: "{{ .Release.Name }}-deploy"
-  namespace: {{ .Values.delivery.kargo.namespace | default "msp" }}
+  namespace: msp
 spec:
   requestedFreight:
   - origin:
@@ -22,4 +21,3 @@ spec:
           value: {{ .Release.Name }}
         - name: imageRepository
           value: {{ .Values.image.repository }}
-{{- end }}
